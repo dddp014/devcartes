@@ -1,39 +1,26 @@
 const { Router } = require("express");
 const { User, Project } = require("../models");
-const {
-  BadRequest,
-  Unauthorized,
-  Forbidden,
-  NotFound,
-  Identification,
-} = require("../middlewares");
+const { BadRequest } = require("../middlewares");
 
 const router = Router();
 
 //프로젝트 추가
-router.post("/", async (req, res, next) => {
+router.post("/:id", async (req, res, next) => {
   try {
-    // 세션 확인(401 error)
-    if (!req.session.passport) {
-      throw new Unauthorized("로그인 후 이용 가능합니다.");
+    const userId = req.params.id;
+
+    const idCheck = await User.findOne({ id: userId });
+
+    if (!idCheck) {
+      throw new BadRequest(
+        "주소 요청이 잘못되었습니다. ID 값을 다시 확인해주세요."
+      );
     }
 
-    const id = req.session.passport.user.id; // id를 session에 있는 id 값으로
-
-    // id 확인(404 error)
-    const user = await User.findOne({ id });
-    if (!user) {
-      throw new NotFound("존재하지 않는 id입니다.");
-    }
-
-    // 본인 확인
-    const identification = Identification(req.session, user);
-    if (!identification) {
-      throw new Forbidden("접근할 수 없습니다.");
-    }
-
+    const id = 9999;
     const { title, startDate, endDate, details } = req.body;
     const project = await Project.create({
+      userId,
       id,
       title,
       startDate,

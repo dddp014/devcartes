@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko"></html>
+<head>
+  <meta charset="UTF-8" />
+  <title>로그인/회원가입</title>
+</head>
+
+<link rel="stylesheet" href="/login.css" />
+
+<body style="background-color: white">
+  <div class="body">
+    <div class="leftNav">
+      <div class="navlogo">
+        <img src="studyhard.jpeg" class="img1" />
+      </div>
+      <div class="navbtns">
+        <button class="gotoNetworkpagebtn" onclick="gotoNetworkpage()">
+          네트워크
+        </button>
+      </div>
+    </div>
+
+    <div class="maincontainer">
+      <div class="lococontainer">
+        <div class="texts">
+          <span>안녕하세요 Dev'cartes! 포트폴리오 공유사이트입니다.</span>
+        </div>
+        <div class="gotoNetworkpage"></div>
+      </div>
+      <div class="LoginContainer" id="LoginContainer" style="display: block">
+        <span class="text-center">Email address</span>
+        <div class="LoginAccount">
+          <input
+            type="text"
+            id="email"
+            class="InputBox"
+            placeholder="E-Mail을 입력해주세요."
+          />
+        </div>
+
+        <span class="text-center">Password</span>
+        <div class="LoginPw">
+          <input
+            type="password"
+            id="pw"
+            class="InputBox"
+            placeholder="비밀번호를 입력해주세요."
+          />
+        </div>
+
+        <div class="btns">
+          <div class="btnbox">
+            <!-- <button class = "LoginBtn" type = "login"><span>로그인</span></button> -->
+            <button class="LoginBtn" onclick="login()">
+              <span>로그인</span>
+            </button>
+            <button class="createAccountBtn" onclick="goCreateAccount()">
+              회원가입
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 회원가입창 -->
+      <div
+        class="createAccountContainer"
+        id="createAccountContainer"
+        style="display: none"
+      >
+        <p>회원가입</p>
+
+        <span>이메일 주소</span>
+        <div class="btnbox">
+          <input
+            type="text"
+            id="setemail"
+            class="InputBox"
+            placeholder="example@example.com"
+          />
+        </div>
+
+        <span>비밀번호</span>
+        <div class="btnbox">
+          <input
+            type="password"
+            id="setpw"
+            class="InputBox"
+            placeholder="사용하실 비밀번호를 입력해주세요."
+          />
+        </div>
+
+        <span>비밀번호 재확인</span>
+        <div class="btnbox">
+          <input
+            type="password"
+            id="setpwchk"
+            class="InputBox"
+            placeholder="비밀번호를 다시 입력해주세요."
+          />
+        </div>
+
+        <span>이름</span>
+        <div class="btnbox">
+          <input
+            type="text"
+            id="setname"
+            class="InputBox"
+            placeholder="이름을 입력해주세요"
+          />
+        </div>
+
+        <button class="createAccountBtn" onclick="outCreateAccount()">
+          <span>취소</span>
+        </button>
+        <button class="createAccountBtn" onclick="setAccounttoServer()">
+          <span>회원가입</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+<!-- 팝업모달창 div -->
+<div class="modal" id="modal" display="none">
+  <div class="modal_popup">
+    <p id="modaltext"></p>
+    <button type="button" class="modal_btn" onclick="closeModal()">확인</button>
+  </div>
+</div>
+
+<script type="text/javascript" src="/login.js"></script>

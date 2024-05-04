@@ -1,0 +1,128 @@
+@font-face {
+  font-family: "continuous";
+  src: url("continuous.ttf") format("truetype");
+}
+
+.navbar {
+  display: flex;
+  height: 100px;
+  background-color: rgba(216, 107, 4, 0.692);
+  border: solid;
+  border-width: 8px;
+}
+
+.logo {
+  font-family: "continuous" /* font-face해결시 추가 */, Arial, sans-serif;
+  font-size: 36px;
+  padding-left: 20px;
+  align-content: center;
+}
+._h4 {
+  margin-block-end: 0.1em;
+  margin-block-start: 0.1em;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  width: 100%;
+}
+
+.profile,
+.education,
+.awards {
+  flex: 1 1 50%;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.education-list {
+  display: flex;
+  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.awards-list {
+  display: flex;
+  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.education-list > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /*중앙 정렬*/
+  margin-bottom: 10px; /*하단 여백 */
+}
+
+.awards-list > div {
+  display: flex;
+  margin-bottom: 10px; /* 하단 여백 */
+}
+
+/* select 박스와 input 필드의 스타일 */
+.education-list select,
+.education-list input {
+  flex-grow: 1; /* 필요에 따라 컨테이너 크기에 맞게 요소를 확장 */
+  margin-right: 10px; /* 우측 마진 */
+  margin-bottom: 10px;
+}
+
+.education-list input:last-child,
+.education-list select:last-child {
+  margin-right: 0; /* 마지막 요소의 우측 마진 제거 */
+}
+
+.awards-list input:last-child,
+.awards-list select:last-child {
+  margin-right: 0; /* 마지막 요소의 우측 마진 제거 */
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+input,
+select,
+button {
+  height: 40px; /* 모든 입력 필드와 버튼의 높이 */
+  padding: 0 10px; /* 좌우 패딩 */
+  box-sizing: border-box; /* border와 padding을 너비에 포함 */
+  margin-right: 10px;
+}
+
+#delete-button {
+  margin-right: 10px;
+  background-color: #8f98eb; /* 삭제 버튼은 빨간색으로 표시 */
+  color: white;
+  padding: 0 15px;
+  border: none;
+  cursor: pointer;
+}
+#confirm-button {
+  margin-right: 10px;
+  background-color: #df6a81; /* 삭제 버튼은 빨간색으로 표시 */
+  color: white;
+  padding: 0 15px;
+  border: none;
+  cursor: pointer;
+}
+
+#buttons-container {
+  display: flex;
+  justify-content: start; /* 버튼을 컨테이너 시작 부분에 정렬 */
+}
+#buttons-container button {
+  margin-right: 10px; /* 오른쪽 여백 추가 */
+}
