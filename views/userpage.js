@@ -124,7 +124,7 @@ function editProfile() {
 
     //div에 자식으로 등록
     nameContainer = document.querySelector(".nameContainer");
-    // emailContainer = document.querySelector(".emailContainer");
+    emailContainer = document.querySelector(".emailContainer");
     descriptionContainer = document.querySelector(".descriptionContainer");
     nameContainer.append(Name);
     nameContainer.append(nameEdit);
@@ -141,8 +141,10 @@ function editProfile() {
     //submit, cancel 버튼 생성
     submitEditButton = document.createElement("button");
     submitEditButton.innerText = "Submit";
+    submitEditButton.id = "submitEditButton";
     cancelEditButton = document.createElement("button");
     cancelEditButton.innerText = "Cancel";
+    cancelEditButton.id = "cancelEditButton";
 
     //submit버튼 클릭시 프로필 편집 정보 저장, 서버로 변경점 업데이트
     submitEditButton.onclick = function submitEditProfile() {

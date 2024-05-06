@@ -8,160 +8,174 @@
   </head>
   <body>
     <!-- 상단 네비게이션 바 -->
-    <div class="navbar">
-      <p class="logo">Devcartes</p>
-    </div>
-    <div class="container">
-      <div class="profile">
-        <!-- 프로필 정보 -->
-        <img
-          src="./studyhard.jpeg"
-          alt="프로필 이미지"
-          style="width: 150px; height: 150px"
-        />
-        <div class="name-Container">
-          <h3 class="Name">데브카르트</h3>
+    <div
+      class="contentContainer"
+      style="display: flex; background-color: #eeeae0"
+    >
+      <nav class="navbar">
+        <div class="logo">Devcartes</div>
+        <div>
+          <div class="navbarContent">Login</div>
+          <div class="navbarContent">Sign up</div>
+          <div class="navbarContent">About us</div>
         </div>
-        <div class="email-Container">
-          <h4 class="Email">Email@email.com</h4>
+      </nav>
+      <div class="container">
+        <div class="profile">
+          <!-- 프로필 정보 -->
+          <img
+            src="./studyhard.jpeg"
+            alt="프로필 이미지"
+            style="width: 150px; height: 150px"
+          />
+          <div class="profileContainer">
+            <div class="nameContainer">
+              <h3 class="Name">데브카르트</h3>
+            </div>
+            <div class="emailContainer">
+              <h4 class="Email">Email@email.com</h4>
+            </div>
+            <div class="descriptionContainer">
+              <p class="Description">---설명---</p>
+            </div>
+          </div>
+          <button class="profileEditButton editBtns" onclick="editProfile()">
+            Edit
+          </button>
         </div>
-        <div class="description-Container">
-          <p class="Description">---설명---</p>
+        <div class="education">
+          <!-- 학력 정보 -->
+          <h2>학력</h2>
+          <div
+            class="education-list"
+            id="educationList"
+            style="display: none"
+          ></div>
+          <div class="editBtns" id="buttons-container">
+            <button
+              id="education_delete_button"
+              onclick="deleteEducation()"
+              style="display: none"
+            >
+              삭제
+            </button>
+            <button
+              id="education_confirm_button"
+              onclick="confirmEducation()"
+              style="display: none"
+            >
+              확인
+            </button>
+            <button
+              id="education_edit_button"
+              onclick="editEducation()"
+              style="display: none"
+            >
+              edit
+            </button>
+            <button id="education_plus_button" onclick="addEducation()">
+              +
+            </button>
+          </div>
         </div>
-        <button class="profileEditButton editBtns" onclick="editProfile()">
-          Edit
-        </button>
-      </div>
-      <div class="education">
-        <!-- 학력 정보 -->
-        <h2>학력</h2>
-        <div
-          class="education-list"
-          id="educationList"
-          style="display: none"
-        ></div>
-        <div class="editBtns" id="buttons-container">
-          <button
-            id="education_delete_button"
-            onclick="deleteEducation()"
-            style="display: none"
-          >
-            삭제
-          </button>
-          <button
-            id="education_confirm_button"
-            onclick="confirmEducation()"
-            style="display: none"
-          >
-            확인
-          </button>
-          <button
-            id="education_edit_button"
-            onclick="editEducation()"
-            style="display: none"
-          >
-            edit
-          </button>
-          <button id="education_plus_button" onclick="addEducation()">+</button>
+        <div class="awards">
+          <!-- 학력 정보 -->
+          <h2>수상 내역</h2>
+          <div class="awards-list" id="awardsList" style="display: none">
+            <div></div>
+          </div>
+          <div class="editBtns" id="buttons-container">
+            <button
+              id="awards_confirm_button"
+              onclick="confirmAwards()"
+              style="display: none"
+            >
+              확인
+            </button>
+            <button
+              id="awards_edit_button"
+              onclick="editAwards()"
+              style="display: none"
+            >
+              edit
+            </button>
+            <button
+              id="awards_delete_button"
+              onclick="deleteAwards()"
+              style="display: none"
+            >
+              삭제
+            </button>
+            <button id="awards_plus_button" onclick="addAwards()">+</button>
+          </div>
         </div>
-      </div>
-      <div class="awards">
-        <!-- 학력 정보 -->
-        <h2>수상 내역</h2>
-        <div class="awards-list" id="awardsList" style="display: none">
-          <div></div>
+        <div class="project">
+          <!-- 학력 정보 -->
+          <h2>프로젝트 내역</h2>
+          <div class="project-list" id="projectList" style="display: none">
+            <div></div>
+          </div>
+          <div class="editBtns" id="buttons-container">
+            <button
+              id="project_confirm_button"
+              onclick="confirmProject()"
+              style="display: none"
+            >
+              확인
+            </button>
+            <button
+              id="project_edit_button"
+              onclick="editProject()"
+              style="display: none"
+            >
+              edit
+            </button>
+            <button
+              id="project_delete_button"
+              onclick="deleteProject()"
+              style="display: none"
+            >
+              삭제
+            </button>
+            <button id="project_plus_button" onclick="addProject()">+</button>
+          </div>
         </div>
-        <div class="editBtns" id="buttons-container">
-          <button
-            id="awards_confirm_button"
-            onclick="confirmAwards()"
+        <div class="certificate">
+          <!-- 학력 정보 -->
+          <h2>자격증 내역</h2>
+          <div
+            class="certificate-list"
+            id="certificateList"
             style="display: none"
           >
-            확인
-          </button>
-          <button
-            id="awards_edit_button"
-            onclick="editAwards()"
-            style="display: none"
-          >
-            edit
-          </button>
-          <button
-            id="awards_delete_button"
-            onclick="deleteAwards()"
-            style="display: none"
-          >
-            삭제
-          </button>
-          <button id="awards_plus_button" onclick="addAwards()">+</button>
-        </div>
-      </div>
-      <div class="project">
-        <!-- 학력 정보 -->
-        <h2>프로젝트 내역</h2>
-        <div class="project-list" id="projectList" style="display: none">
-          <div></div>
-        </div>
-        <div class="editBtns" id="buttons-container">
-          <button
-            id="project_confirm_button"
-            onclick="confirmProject()"
-            style="display: none"
-          >
-            확인
-          </button>
-          <button
-            id="project_edit_button"
-            onclick="editProject()"
-            style="display: none"
-          >
-            edit
-          </button>
-          <button
-            id="project_delete_button"
-            onclick="deleteProject()"
-            style="display: none"
-          >
-            삭제
-          </button>
-          <button id="project_plus_button" onclick="addProject()">+</button>
-        </div>
-      </div>
-      <div class="certificate">
-        <!-- 학력 정보 -->
-        <h2>자격증 내역</h2>
-        <div
-          class="certificate-list"
-          id="certificateList"
-          style="display: none"
-        >
-          <div></div>
-        </div>
-        <div class="editBtns" id="buttons-container">
-          <button
-            id="certificate_confirm_button"
-            onclick="confirmCertificate()"
-            style="display: none"
-          >
-            확인
-          </button>
-          <button
-            id="certificate_edit_button"
-            onclick="editCertificate()"
-            style="display: none"
-          >
-            edit
-          </button>
-          <button
-            id="certificate_delete_button"
-            onclick="deleteCertificate()"
-            style="display: none"
-          >
-            삭제
-          </button>
-          <button id="certificate_plus_button" onclick="addCertificate()">
-            +
-          </button>
+            <div></div>
+          </div>
+          <div class="editBtns" id="buttons-container">
+            <button
+              id="certificate_confirm_button"
+              onclick="confirmCertificate()"
+              style="display: none"
+            >
+              확인
+            </button>
+            <button
+              id="certificate_edit_button"
+              onclick="editCertificate()"
+              style="display: none"
+            >
+              edit
+            </button>
+            <button
+              id="certificate_delete_button"
+              onclick="deleteCertificate()"
+              style="display: none"
+            >
+              삭제
+            </button>
+            <button id="certificate_plus_button" onclick="addCertificate()">
+              +
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -3,19 +3,33 @@
   src: url("continuous.ttf") format("truetype");
 }
 
+.contentContainer {
+  display: flex;
+  background-color: #eeeae0;
+  margin: -1%;
+}
 .navbar {
   display: flex;
-  height: 100px;
-  background-color: rgba(216, 107, 4, 0.692);
-  border: solid;
-  border-width: 8px;
+  flex-direction: column;
+  width: 25%;
+  padding: 30px 0 35% 0;
+  /* background-color: rgba(216, 107, 4, 0.692); */
+  background-color: #eeeae0;
 }
-
+.navbarContent {
+  font-family: "continuous", Arial, sans-serif;
+  font-size: 24px;
+  padding: 2.5% 0 2.5% 0;
+  margin: 0 10% 0 10%;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+}
+.navbarContent:nth-last-child(1) {
+  box-shadow: none;
+}
 .logo {
   font-family: "continuous", Arial, sans-serif;
-  font-size: 36px;
-  padding-left: 20px;
-  align-content: center;
+  font-size: 52px;
+  padding: 0 0 30% 10%;
 }
 ._h4 {
   margin-block-end: 0.1em;
@@ -30,15 +44,28 @@ body {
   display: flex;
   flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
   width: 100%;
+  background-color: white;
 }
 
 .profile,
 .education,
 .awards,
-.project{
+.project,
+.certificate {
   flex: 1 1 50%;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* .nameContainer,
+.emailContainer,
+.descriptionContainer {
+  border-left: 5px solid #ccc;
+} */
+.profileContainer {
+  border-left: 5px solid #ccc;
+  padding-left: 10px;
+  margin-bottom: 10px;
 }
 
 .education-list {
@@ -124,7 +151,21 @@ button {
   box-sizing: border-box; /* border와 padding을 너비에 포함 */
   margin-right: 10px;
 }
+input {
+  border: none;
+  border-radius: 15px;
+  background-color: rgb(233, 233, 233);
+}
+.profileEditButton {
+  margin-right: 10px;
+  background-color: #ffee83;
+  color: #000000;
+  border-width: 1px;
+  border-radius: 5%;
+  cursor: pointer;
+}
 
+#cancelEditButton,
 #education_delete_button,
 #awards_delete_button,
 #project_delete_button,
@@ -134,9 +175,11 @@ button {
   color: white;
   padding: 0 15px;
   border: none;
+  border-radius: 10%;
   cursor: pointer;
 }
 
+#submitEditButton,
 #education_confirm_button,
 #awards_confirm_button,
 #project_confirm_button,
@@ -146,9 +189,9 @@ button {
   color: white;
   padding: 0 15px;
   border: none;
+  border-radius: 10%;
   cursor: pointer;
 }
-
 #buttons-container {
   display: flex;
   justify-content: start; /* 버튼을 컨테이너 시작 부분에 정렬 */
