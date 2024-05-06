@@ -1,17 +1,34 @@
 //open api로 테스트
-async function fetchUsers() {
-  const res = await fetch(
-    "https://api.thecatapi.com/v1/images/search?limit=30&api_key=live_OFhz6Cq9zKqH8FTbc7H2SIbYETbvWoV1155zqmiwZEFX5B0fB0k12tnENikJsxC4"
-  );
-  const imageData = await res.json();
-  return imageData;
-}
+// async function fetchUsers() {
+//   const res = await fetch(
+//     "https://api.thecatapi.com/v1/images/search?limit=30&api_key=live_OFhz6Cq9zKqH8FTbc7H2SIbYETbvWoV1155zqmiwZEFX5B0fB0k12tnENikJsxC4"
+//   );
+//   const imageData = await res.json();
+//   return imageData;
+// }
+
+// 가상 데이터 베이스
+userProfileImage = {
+  data: [
+    { email: "test5555@test.com", url: "./userdata/img1.jpg" },
+    { email: "test12525@test.com", url: "./userdata/img2.jpg" },
+    { email: "youmin@naver.com", url: "./userdata/img3.jpg" },
+    { email: "test@test.com", url: "./userdata/img4.jpg" },
+    { email: "test1234@test.com", url: "./userdata/img5.jpg" },
+    { email: "wdwd@arr.com", url: "./userdata/img6.jpg" },
+    { email: "wewe@wewe.com", url: "./userdata/img7.jpg" },
+    { email: "elice10@test.com", url: "./userdata/img8.jpg" },
+    { email: "test1234@test.com", url: "./userdata/img9.jpg" },
+    { email: "elice1@test.com", url: "./userdata/img10.jpg" },
+    { email: "elice@test.com", url: "./userdata/img11.jpg" },
+  ],
+};
 
 /** 유저 정보 api 요청 */
 async function fetchUser() {
   const res = await fetch(`http://localhost:8080/users`);
-  const datas = await res.json();
-  return datas;
+  const data = await res.json();
+  return data;
 }
 
 /** 현재 사용자인지 여부 판단 */
@@ -52,6 +69,7 @@ async function menuClickHandler() {
     const login = localStorage.getItem("login");
 
     if (loginTrue.status === true && login) {
+      localStorage.setItem("tempId", loginTrue.data.id);
       window.location.href = `/userpage`; //개인 페이지 이동
     } else {
       alert("로그인 창으로 이동합니다.");
@@ -65,21 +83,49 @@ async function menuClickHandler() {
 }
 
 /** 다른 사용자 목록 이벤트 핸들러 */
-async function ImgClickHandler() {
-  try {
-    const loginTrue = await fetchTrue();
-    // const loginFalse = await fetchFalse();
+// async function ImgClickHandler() {
+//   try {
+//     const loginTrue = await fetchTrue();
+//     const userData = await fetchUser();
+//     const imageData = userProfileImage;
 
+//     // const loginFalse = await fetchFalse();
+
+//     const login = localStorage.getItem("login");
+
+//     const user = userData.data.find((user) => user.email === imageData.email);
+//     localStorage.setItem("tempId", user.id);
+
+//     if (loginTrue.status === true && login) {
+//       window.location.href = "/userpage"; //개인 페이지로 이동
+//     } else {
+//       alert("로그인 창으로 이동합니다.");
+//       window.location.href = `/login`;
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     alert(error.message);
+//     window.location.href = `/login`;
+//   }
+// }
+
+/** 다른 사용자 목록 이벤트 핸들러 */
+async function ImgClickHandler(email) {
+  try {
+    const userData = await fetchUser();
+    const user = userData.data.find((user) => user.email === email);
     const login = localStorage.getItem("login");
 
-    if (loginTrue.status === true && login) {
-      window.location.href = "/userpage"; //개인 페이지로 이동
+    if (user && login) {
+      // 유저의 데이터가 일치하고, 로그인이 되어있으면 유저 페이지로 이동
+      localStorage.setItem("tempId", user.id);
+      window.location.href = "/userpage"; // 유저 페이지로 이동
     } else {
       alert("로그인 창으로 이동합니다.");
       window.location.href = `/login`;
     }
   } catch (error) {
-    console.error("401 error");
+    console.error(error);
     alert(error.message);
     window.location.href = `/login`;
   }
@@ -111,11 +157,11 @@ async function ImgClickHandler() {
 async function getUserImage() {
   try {
     const userElem = document.getElementById("userContent");
-    const images = await fetchUsers();
     const userData = await fetchUser();
+    const imageData = userProfileImage.data;
 
     userElem.innerHTML = "";
-    images.forEach((image, index) => {
+    imageData.forEach((image) => {
       const container = document.createElement("div");
       const imageElem = document.createElement("img");
       const textElem = document.createElement("p");
@@ -129,9 +175,12 @@ async function getUserImage() {
 
       textElem.style.display = "none";
 
-      if (userData.data[index] && userData.data[index].description) {
+      const user = userData.data.find((user) => user.email === image.email);
+      if (user) {
+        console.log(user.id);
         textElem.innerHTML = `안녕하세요! <br>
-                ${userData.data[index].description}`;
+                이름: ${user.name} <br>
+                자기소개: ${user.description}`;
       } else {
         textElem.innerHTML = `사용자 정보가 없습니다.`;
       }
@@ -142,6 +191,15 @@ async function getUserImage() {
 
       imageElem.addEventListener("mouseleave", () => {
         textElem.style.display = "none";
+
+        // 이미지 클릭 시 이벤트 핸들러 추가
+        imageElem.addEventListener("click", () => {
+          ImgClickHandler(image.email);
+
+          textElem.addEventListener("click", () => {
+            ImgClickHandler(image.email);
+          });
+        });
       });
     });
   } catch (error) {
@@ -190,9 +248,9 @@ function init() {
 
   const userpageElem = document.querySelector(".userpage");
   const loginElem = document.querySelector(".login");
-  const userElem = document.getElementById("userContent");
+  // const userElem = document.getElementById("userContent");
 
-  userElem.addEventListener("click", ImgClickHandler);
+  // userElem.addEventListener("click", ImgClickHandler);
   userpageElem.addEventListener("click", menuClickHandler);
   loginElem.addEventListener("click", menuClickHandler);
 }

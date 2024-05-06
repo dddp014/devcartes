@@ -22,7 +22,7 @@ var nameContainer,
 // massId 값 아래 중 하나 선택해서 하드코딩하고 참조되는값 바뀌는것 확인 Ok
 // 'ZttKLSVoI4' , 'TU639YT3DO' , 'aaf0b6b7-5ba8-4638-9afd-c38d3d459790'
 
-const massId = "f0eec3d6-6899-49c3-856d-b2d7db3fced1";
+let massId = localStorage.getItem("tempId");
 
 // mypage/project post 테스트
 // fetch("http://localhost:8080/mypage/project", {
@@ -820,3 +820,8 @@ function confirmCertificate() {
 
 getUserData();
 isVisibleBtns();
+
+window.addEventListener("popstate", function (event) {
+  delete massId; // 사용자 id 값 삭제
+  localStorage.removeItem("tempId"); // 로컬 스토리지 삭제
+});
