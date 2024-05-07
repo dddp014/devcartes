@@ -96,7 +96,11 @@
             id="setpwchk"
             class="InputBox"
             placeholder="비밀번호를 다시 입력해주세요."
+            onkeyup="passwordCompare()"
           />
+          <span class="alert-text" id="alert-text"
+            >비밀번호가 일치하지 않습니다.</span
+          >
         </div>
 
         <span>이름</span>
@@ -109,23 +113,99 @@
           />
         </div>
 
+        <span>닉네임</span>
+        <div class="btnbox">
+          <input
+            type="text"
+            id="setNickname"
+            class="InputBox"
+            placeholder="사용하실 닉네임을 입력해주세요"
+          />
+        </div>
+
         <button class="createAccountBtn" onclick="outCreateAccount()">
           <span>취소</span>
         </button>
-        <button class="createAccountBtn" onclick="setAccounttoServer()">
+        <button class="createAccountBtn" onclick="setAccount()">
           <span>회원가입</span>
         </button>
       </div>
+
+      <!-- 개인정보 변경 (회원탈퇴&비밀번호변경)-->
+
+      <div
+        class="privacy-modify"
+        id="privacy-modify-container"
+        style="display: block"
+      >
+        <span>임시로 띄워둔 개인정보 변경 div로 추후 수정예정(기능은작동합니다)</span>
+
+        <div class="change-password-container">
+          <p>비밀번호 변경</p>
+          <span>이전 비밀번호</span>
+          <div class="btnbox">
+            <input
+              type="password"
+              id="existed-pw"
+              class="InputBox"
+              placeholder="이전 비밀번호를 입력해주세요"
+            />
+          </div>
+          <span>변경 할 비밀번호</span>
+          <div class="btnbox">
+            <input
+              type="password"
+              id="change-setpw"
+              class="InputBox"
+              placeholder="변경하실 비밀번호를 입력해주세요."
+            />
+          </div>
+          <span>비밀번호 재확인</span>
+          <div class="btnbox">
+            <input
+              type="password"
+              id="change-setpwchk"
+              class="InputBox"
+              placeholder="변경하실 비밀번호를 다시 입력해주세요."
+              onkeyup="passwordCompare()"
+            />
+            <span class="alert-text2" id="alert-text2"
+              >비밀번호가 일치하지 않습니다.</span
+            >
+          </div>
+          <button class="change-password-btn" onclick="passwordChange()">
+            비밀번호 변경
+          </button>
+        </div>
+
+        <div class="delete-account-container">
+          <span>회원탈퇴를 진행하시려면 현재 비밀번호를 입력해주세요.</span>
+          <div class="btnbox">
+            <input
+              type="password"
+              id="delete-account-pwchk"
+              class="InputBox"
+              placeholder="현재 비밀번호를 입력해주세요."
+            />
+          </div>
+          <button class="delete-account-btn" onclick="accountDelete()">
+            회원 탈퇴
+          </button>
+        </div>
+      </div>
+
+    </div>
+  
+
+  <!-- 팝업모달창 div -->
+  <div class="modal" id="modal" display="none">
+    <div class="modal_popup">
+      <p id="modaltext"></p>
+      <button type="button" class="modal_btn" onclick="modalClose()">
+        확인
+      </button>
     </div>
   </div>
+
+  <script type="text/javascript" src="/login.js"></script>
 </body>
-
-<!-- 팝업모달창 div -->
-<div class="modal" id="modal" display="none">
-  <div class="modal_popup">
-    <p id="modaltext"></p>
-    <button type="button" class="modal_btn" onclick="modalClose()">확인</button>
-  </div>
-</div>
-
-<script type="text/javascript" src="/login.js"></script>

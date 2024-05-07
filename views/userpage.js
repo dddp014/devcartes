@@ -11,7 +11,7 @@ var emailEdit,
   descriptionEdit,
   descriptionValue,
   description;
-var nameContainer,
+let nameContainer,
   emailContainer,
   descriptionContainer,
   submitEditButton,
@@ -641,7 +641,7 @@ function confirmEducation() {
   const postData = {
     schoolName: schoolName,
     major: major,
-    schoolState: degree,
+    schoolStatus: degree,
   };
 
   fetch(`http://localhost:8080/mypage/education`, {

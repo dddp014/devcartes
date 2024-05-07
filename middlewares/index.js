@@ -1,9 +1,9 @@
 // error
-const BadRequest = require("./error/badrequest"); // 400 error
-const Unauthorized = require("./error/unauthorized"); // 401 error
-const Forbidden = require("./error/forbidden"); // 403 error
-const NotFound = require("./error/notfound"); // 404 error
-const Conflict = require("./error/conflict"); // 409 error
+const BadRequest = require("./error/BadRequest"); // 400 error
+const Unauthorized = require("./error/Unauthorized"); // 401 error
+const Forbidden = require("./error/Forbidden"); // 403 error
+const NotFound = require("./error/NotFound"); // 404 error
+const Conflict = require("./error/Conflict"); // 409 error
 
 // user
 const Identification = require("./user/identification");
