@@ -47,11 +47,11 @@ const massId = "f0eec3d6-6899-49c3-856d-b2d7db3fced1";
 //   });
 
 // mypage/project get 테스트
-fetch("http://localhost:8080/auth/status")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-  });
+// fetch("http://localhost:8080/auth/status")
+//   .then((res) => res.json())
+//   .then((data) => {
+//     console.log(data);
+//   });
 
 // edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 editBtns이라는 class 할당해서 일괄 display 설정
 function isVisibleBtns() {
@@ -60,7 +60,7 @@ function isVisibleBtns() {
     .then((data) => {
       targets = document.querySelectorAll(".editBtns");
       targets.forEach((target) => {
-        if (data.data.id == massId) {
+        if (data.data.userId == massId) {
           target.style.display = "block";
         } else {
           target.style.display = "none";
@@ -75,7 +75,7 @@ function getUserData() {
   fetch(`http://localhost:8080/users/${massId}`)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
+      console.log(data);
       //학력, 수강이력 등 정보는 각각 data.education , data.awards 등으로 변수 정해서 해결할것
       document.querySelector(".Name").innerText = data.user.name;
       document.querySelector(".Email").innerText = data.user.email;
