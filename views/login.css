@@ -3,6 +3,16 @@
   src: url("continuous.ttf") format("truetype");
 }
 
+.alert-text {
+  color: red;
+  font-weight: bold;
+  display: none;
+}
+
+.btnbox {
+  border-color: gray;
+}
+
 .body {
   width: 100%;
   height: 100%;
@@ -42,6 +52,14 @@
   height: 900px;
   background-color: white;
   position: absolute;
+}
+
+.privacy-modify {
+  padding-top: 5%;
+}
+
+.delete-account-container {
+  padding-top: 5%;
 }
 
 /* 팝업모달 */

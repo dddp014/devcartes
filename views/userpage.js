@@ -1,15 +1,17 @@
+//전역변수 삭제 작업중, 이름관련 엘리멘트들 함수화 하는 과정에서 const {nameEdit, nameValue}가 제대로 작동하지 않는 문제 발생
+//수정필요
 var Editcount = 0;
 
-var nameEdit,
-  nameValue,
-  Name,
-  emailEdit,
+// var nameEdit,
+//    nameValue,
+// Name,
+var emailEdit,
   emailValue,
   email,
   descriptionEdit,
   descriptionValue,
   description;
-var nameContainer,
+let nameContainer,
   emailContainer,
   descriptionContainer,
   submitEditButton,
@@ -17,6 +19,101 @@ var nameContainer,
   profile,
   profileEditButton;
 
+function createNameInputElement() {
+  const nameEdit = document.createElement("input");
+  nameEdit.type = "text";
+  nameEdit.className = "input";
+  nameEdit.Id = "nameinput";
+  const nameValue = document.querySelector(".Name");
+  nameEdit.placeholder = `${nameValue.innerText}`;
+  return { nameEdit: nameEdit, nameValue: nameValue };
+}
+
+function createNameh4Element() {
+  const Name = document.createElement("h4");
+  Name.className = "_h4";
+  Name.Id = "nameh4";
+  Name.innerText = "이름";
+  return { Name };
+}
+
+function submitEditProfile() {
+  const { nameEdit, nameValue } = createNameInputElement();
+  const { Name } = createNameh4Element();
+  // 편집 값 저장 & 공백시 "없음" 출력
+  nameValue.innerText = nameEdit.value;
+  console.log(nameValue);
+  console.log(nameEdit);
+  if (!nameValue.innerText) nameValue.innerText = "없음";
+  // emailValue.innerText = emailEdit.value;
+  // if (!emailValue.innerText) emailValue.innerText = "없음";
+  descriptionValue.innerText = descriptionEdit.value;
+  if (!descriptionValue.innerText) descriptionValue.innerText = "없음";
+
+  //요소 보이기
+  nameValue.style.display = "block";
+  // emailValue.style.display = "block";
+  descriptionValue.style.display = "block";
+  profileEditButton.style.display = "block";
+
+  //요소 숨기기
+  nameEdit.style.display = "none";
+  // emailEdit.style.display = "none";
+  descriptionEdit.style.display = "none";
+  Name.style.display = "none";
+  // email.style.display = "none";
+  description.style.display = "none";
+
+  submitEditButton.style.display = "none";
+  cancelEditButton.style.display = "none";
+
+  //서버로 name, description 보내기
+  fetch("http://localhost:8080/users/mypage", {
+    method: "PUT", // HTTP 메서드
+    headers: {
+      "Content-Type": "application/json", // 컨텐트 타입 설정
+      Accept: "application/json", // 서버로부터 JSON 응답을 기대함을 명시
+    },
+    body: JSON.stringify({
+      name: nameEdit.value,
+      description: descriptionEdit.value,
+    }), // JSON 문자열로 변환하여 데이터 전송
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("네트워크 오류입니다.");
+      }
+      return res.json(); // 응답을 JSON 형태로 파싱
+    })
+    .then((data) => {
+      console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
+      alert("프로필 정보가 성공적으로 등록되었습니다.");
+    })
+    .catch((error) => {
+      console.error("Error:", error); // 에러 처리
+      alert("에러가 발생했습니다");
+    });
+}
+function cancelEditProfile() {
+  const { nameEdit, nameValue } = createNameInputElement();
+  const { Name } = createNameh4Element();
+  //요소 보이기
+  nameValue.style.display = "block";
+  // emailValue.style.display = "block";
+  descriptionValue.style.display = "block";
+  profileEditButton.style.display = "block";
+
+  //요소 숨기기
+  nameEdit.style.display = "none";
+  // emailEdit.style.display = "none";
+  descriptionEdit.style.display = "none";
+  Name.style.display = "none";
+  // email.style.display = "none";
+  description.style.display = "none";
+
+  submitEditButton.style.display = "none";
+  cancelEditButton.style.display = "none";
+}
 //네트워크 페이지에서 담아보낼값 아래 localStorage 처럼 사용하면됨
 // let massId = localStorage.getItem("tempId"); // 작동되는거확인 Ok
 // massId 값 아래 중 하나 선택해서 하드코딩하고 참조되는값 바뀌는것 확인 Ok
@@ -40,7 +137,7 @@ function isVisibleBtns() {
     .then((data) => {
       targets = document.querySelectorAll(".editBtns");
       targets.forEach((target) => {
-        if (data.data.id == massId) {
+        if (data.data.userId == massId) {
           target.style.display = "block";
         } else {
           target.style.display = "none";
@@ -48,7 +145,6 @@ function isVisibleBtns() {
       });
     });
 }
-
 //userpage 에 표시될 유저 data 받아오기 및 표시
 //본인 userpage 던 타 userpage던 아래 코드로 바로 표시가능(구분방법 massId)
 function getUserData() {
@@ -75,15 +171,17 @@ function editProfile() {
   // 프로필 편집 로직
   //이름 편집 input 생성
   if (Editcount === 0) {
-    nameEdit = document.createElement("input");
-    nameEdit.setAttribute("type", "text");
-    nameEdit.className = "input";
-    nameValue = document.querySelector(".Name");
-    nameEdit.setAttribute("placeholder", `${nameValue.innerText}`);
-
-    Name = document.createElement("h4");
-    Name.className = "_h4";
-    Name.innerText = "이름";
+    // nameEdit = document.createElement("input");
+    // nameEdit.setAttribute("type", "text");
+    // nameEdit.className = "input";
+    // nameValue = document.querySelector(".Name");
+    // nameEdit.setAttribute("placeholder", `${nameValue.innerText}`);
+    // createNameInputElement();
+    const { nameEdit, nameValue } = createNameInputElement();
+    const { Name } = createNameh4Element();
+    // Name = document.createElement("h4");
+    // Name.className = "_h4";
+    // Name.innerText = "이름";
 
     // //이메일 편집 input 생성
     // emailEdit = document.createElement("input");
@@ -112,7 +210,7 @@ function editProfile() {
 
     //div에 자식으로 등록
     nameContainer = document.querySelector(".nameContainer");
-    // emailContainer = document.querySelector(".emailContainer");
+    emailContainer = document.querySelector(".emailContainer");
     descriptionContainer = document.querySelector(".descriptionContainer");
     nameContainer.append(Name);
     nameContainer.append(nameEdit);
@@ -126,86 +224,19 @@ function editProfile() {
     // emailValue.style.display = "none";
     descriptionValue.style.display = "none";
 
+    //edit 버튼 숨기기
+    profileEditButton = document.querySelector(".profileEditButton");
+    profileEditButton.style.display = "none";
+
     //submit, cancel 버튼 생성
     submitEditButton = document.createElement("button");
     submitEditButton.innerText = "Submit";
+    submitEditButton.id = "submitEditButton";
     cancelEditButton = document.createElement("button");
     cancelEditButton.innerText = "Cancel";
-
-    //submit버튼 클릭시 프로필 편집 정보 저장, 서버로 변경점 업데이트
-    submitEditButton.onclick = function submitEditProfile() {
-      // 편집 값 저장 & 공백시 "없음" 출력
-      nameValue.innerText = nameEdit.value;
-      if (!nameValue.innerText) nameValue.innerText = "없음";
-      // emailValue.innerText = emailEdit.value;
-      // if (!emailValue.innerText) emailValue.innerText = "없음";
-      descriptionValue.innerText = descriptionEdit.value;
-      if (!descriptionValue.innerText) descriptionValue.innerText = "없음";
-
-      //요소 보이기
-      nameValue.style.display = "block";
-      // emailValue.style.display = "block";
-      descriptionValue.style.display = "block";
-      profileEditButton.style.display = "block";
-
-      //요소 숨기기
-      nameEdit.style.display = "none";
-      // emailEdit.style.display = "none";
-      descriptionEdit.style.display = "none";
-      Name.style.display = "none";
-      // email.style.display = "none";
-      description.style.display = "none";
-
-      submitEditButton.style.display = "none";
-      cancelEditButton.style.display = "none";
-
-      //서버로 name, description 보내기
-      fetch("http://localhost:8080/users/mypage", {
-        method: "PUT", // HTTP 메서드
-        headers: {
-          "Content-Type": "application/json", // 컨텐트 타입 설정
-          Accept: "application/json", // 서버로부터 JSON 응답을 기대함을 명시
-        },
-        body: JSON.stringify({
-          name: nameEdit.value,
-          description: descriptionEdit.value,
-        }), // JSON 문자열로 변환하여 데이터 전송
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("네트워크 오류입니다.");
-          }
-          return res.json(); // 응답을 JSON 형태로 파싱
-        })
-        .then((data) => {
-          console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
-          alert("프로필 정보가 성공적으로 등록되었습니다.");
-        })
-        .catch((error) => {
-          console.error("Error:", error); // 에러 처리
-          alert("에러가 발생했습니다");
-        });
-    };
-
-    cancelEditButton.onclick = function cancelEditProfile() {
-      //요소 보이기
-      nameValue.style.display = "block";
-      // emailValue.style.display = "block";
-      descriptionValue.style.display = "block";
-      profileEditButton.style.display = "block";
-
-      //요소 숨기기
-      nameEdit.style.display = "none";
-      // emailEdit.style.display = "none";
-      descriptionEdit.style.display = "none";
-      Name.style.display = "none";
-      // email.style.display = "none";
-      description.style.display = "none";
-
-      submitEditButton.style.display = "none";
-      cancelEditButton.style.display = "none";
-    };
-
+    cancelEditButton.id = "cancelEditButton";
+    // submitEditButton = document.getElementById("#submitEditButton");
+    // cancelEditButton = document.getElementById("#cancelEditButton");
     profile = document.querySelector(".profile");
     profile.append(submitEditButton);
     profile.append(cancelEditButton);
@@ -216,6 +247,8 @@ function editProfile() {
 
     Editcount = 1; //edit 버튼 다시 누를땐 elment 추가 x, 숨김 요소만 보이기 혹시 다른페이지 돌릴때 0으로 바꿔줘야 하나?
   } else {
+    // const { nameEdit, nameValue } = createNameInputElement();
+    // const { Name } = createNameh4Element();
     //요소 보이기
     nameEdit.style.display = "";
     // emailEdit.style.display = "";
@@ -403,7 +436,7 @@ function deleteEducation(button, educationId) {
       if (!response.ok) {
         throw new Error(`에러!! status: ${response.status}`);
       }
-      return response.json();
+      return res.json(); // 응답을 JSON 형태로 파싱
     })
     .then((data) => {
       console.log(data);
@@ -412,8 +445,8 @@ function deleteEducation(button, educationId) {
       educationEntry.remove();
     })
     .catch((error) => {
-      console.error("Error:", error);
-      alert(`학력 정보 삭제에 실패하였습니다. (에러 코드: ${error.message})`);
+      console.error("Error:", error); // 에러 처리
+      alert("학력 정보 등록에 실패하였습니다.");
     });
 
   plusButton.style.display = "block";
@@ -421,8 +454,3 @@ function deleteEducation(button, educationId) {
 
 getUserData();
 isVisibleBtns();
-
-window.addEventListener("popstate", function (event) {
-  delete massId; // 사용자 id 값 삭제
-  localStorage.removeItem("tempId"); // 로컬 스토리지 삭제
-});
