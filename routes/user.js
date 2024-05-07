@@ -239,10 +239,7 @@ const upload = multer({
 });
 
 // 프로필 이미지 업로드
-router.put(
-  "/profileImg",
-  upload.single("profileImg"),
-  async (req, res, next) => {
+router.put("/mypage/profileImg", upload.single("profileImg"), async (req, res, next) => {
     try {
       // 세션 확인(401 error)
       if (!req.session.passport) {
