@@ -42,20 +42,8 @@
             </button>
           </h2>
         </div>
-        <div
-          class="education-list"
-          id="educationList"
-          style="display: none"
-        ></div>
+        <div class="education-list" id="educationList"></div>
         <div class="editBtns">
-          <button
-            id="education_delete_button"
-            onclick="deleteEducation()"
-            style="display: none"
-          >
-            삭제
-          </button>
-
           <button
             id="education_edit_button"
             onclick="editEducation()"
@@ -192,20 +180,20 @@
           </select>
           <input type="text" id="university" placeholder="대학교" />
           <input type="text" id="major" placeholder="전공" />
-          <select>
+          <select id="graduationStatus">
             <option value="">졸업여부</option>
-            <option value="bachelor">졸업</option>
-            <option value="master">재학중</option>
-            <option value="master">휴학중</option>
-            <option value="phd">수료</option>
-            <option value="phd">중퇴</option>
-            <option value="phd">자퇴</option>
-            <option value="phd">졸업예정</option>
+            <option value="graduated">졸업</option>
+            <option value="enrolled">재학중</option>
+            <option value="leave">휴학중</option>
+            <option value="completed">수료</option>
+            <option value="dropout">중퇴</option>
+            <option value="selfDropout">자퇴</option>
+            <option value="graduateIntended">졸업예정</option>
           </select>
           <input type="date" placeholder="입학 년월" />
           <input type="date" placeholder="졸업 년월" />
           <button id="education_delete_button" onclick="deleteEducation(this)">
-            Remove
+            취소
           </button>
           <button
             type="button"
@@ -213,6 +201,13 @@
             onclick="confirmEducation(event)"
           >
             확인
+          </button>
+          <button
+            type="button"
+            class="education-edit-button"
+            onclick="submitEducationUpdate()"
+          >
+            수정
           </button>
         </form>
       </div>

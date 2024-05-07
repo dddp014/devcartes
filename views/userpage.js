@@ -23,35 +23,15 @@ var nameContainer,
 // 'ZttKLSVoI4' , 'TU639YT3DO' , 'aaf0b6b7-5ba8-4638-9afd-c38d3d459790'
 
 // let massId = localStorage.getItem("tempId");
-const massId = "f0eec3d6-6899-49c3-856d-b2d7db3fced1";
-
-// mypage/project post 테스트
-// fetch("http://localhost:8080/mypage/project", {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({
-//     title: "테스트프로젝트타이틀",
-//     startDate: "2024-04-29",
-//     endDate: "2024-05-12",
-//     details: "프로젝트 post 테스트입니다.",
-//   }),
-// })
-//   .then((res) => {
-//     console.log("res ", res);
-//     res.json();
-//   })
-//   .then((data) => {
-//     console.log("data ", data);
-//   });
+const massId = "AopBYfBup4";
 
 // mypage/project get 테스트
 fetch("http://localhost:8080/auth/status")
-  .then((res) => res.json())
+  .then((response) => response.json())
   .then((data) => {
-    console.log(data);
-  });
+    console.log(data); // 전체 데이터 구조 확인
+  })
+  .catch((error) => console.error("Error:", error));
 
 // edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 editBtns이라는 class 할당해서 일괄 display 설정
 function isVisibleBtns() {
@@ -75,11 +55,18 @@ function getUserData() {
   fetch(`http://localhost:8080/users/${massId}`)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
+      console.log(data);
       //학력, 수강이력 등 정보는 각각 data.education , data.awards 등으로 변수 정해서 해결할것
       document.querySelector(".Name").innerText = data.user.name;
       document.querySelector(".Email").innerText = data.user.email;
       document.querySelector(".Description").innerText = data.user.description;
+
+      console.log(data); // 전체 데이터 구조 확인
+      if (!data || !Array.isArray(data.education)) {
+        console.error("Education data is not available or not an array:", data);
+        return;
+      }
+      updateEducationList(data.education);
     });
 }
 
@@ -227,21 +214,6 @@ function editProfile() {
     profileEditButton = document.querySelector(".profileEditButton");
     profileEditButton.style.display = "none";
 
-    //3번 반복 되므로 여유되면 함수로 압축
-
-    //프로필 이미지 편집 로직
-    //   function createImageEditButton() {
-    //     var ImageEditForm = document.createElement("form");
-    //     ImageEditForm.setAttribute("id", "form");
-    //     ImageEditForm.setAttribute("method", "post");
-    //     ImageEditForm.setAttribute("enctype", "multipart/form-data");
-    //     var ImageEditButton = document.createElement("button");
-    //     ImageEditButton.textcontent = "프로필 이미지 변경";
-    //     document.querySelcetor("#form").append(ImageEditButton);
-    //     ImageEditButton.onclick = function changeImage() {};
-    //   }
-    // alert("프로필 편집 기능은 개발 중입니다.");
-
     Editcount = 1; //edit 버튼 다시 누를땐 elment 추가 x, 숨김 요소만 보이기 혹시 다른페이지 돌릴때 0으로 바꿔줘야 하나?
   } else {
     //요소 보이기
@@ -274,18 +246,8 @@ function editProfile() {
   }
 }
 
-// 학력 편집 기능
-// function editEducation(educationItem) {
-//   // contentEditable 상태 토글
-//   const isEditable = educationItem.contentEditable === "true";
-//   educationItem.contentEditable = isEditable ? "false" : "true";
-//   if (!isEditable) {
-//     educationItem.focus(); // 편집 가능 상태가 되면 포커스
-//   }
-// }
-
 function confirmEducation(event) {
-  let form = document.getElementById("educationForm");
+  const form = document.getElementById("educationModal");
 
   event.preventDefault();
 
@@ -293,7 +255,7 @@ function confirmEducation(event) {
   const major = document.getElementById("major").value; // 전공
   const schoolStatus = document.getElementById("schoolStatus").value; // 전공
 
-  console.log(typeof university);
+  console.log(typeof schoolName);
   console.log(typeof major);
   console.log(typeof schoolStatus);
 
@@ -310,7 +272,7 @@ function confirmEducation(event) {
     method: "POST", // HTTP 메서드
     headers: {
       "Content-Type": "application/json", // 컨텐트 타입 설정
-      // Accept: "application/json", // 서버로부터 JSON 응답을 기대함을 명시
+      Accept: "application/json", // 서버로부터 JSON 응답을 기대함을 명시
     },
     body: JSON.stringify(postData), // JSON 문자열로 변환하여 데이터 전송
   })
@@ -323,7 +285,11 @@ function confirmEducation(event) {
     .then((data) => {
       console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
       alert("학력 정보가 성공적으로 등록되었습니다.");
-      // updateEducationList(postData);
+      document.getElementById("university").value = "";
+      document.getElementById("major").value = "";
+      document.getElementById("schoolStatus").value = "";
+      form.style.display = "none";
+      getUserData();
     })
     .catch((error) => {
       console.error("Error:", error); // 에러 처리
@@ -331,92 +297,25 @@ function confirmEducation(event) {
     });
 }
 
-function updateEducationList(data) {
+//확정된 정보를 div로 추가하기
+function updateEducationList(educationArray) {
   const educationList = document.getElementById("educationList");
+  educationList.innerHTML = ""; // 기존 목록을 초기화
 
-  // 새로운 학력 정보를 표시할 HTML 요소를 생성
-  const entry = document.createElement("div");
-  entry.classList.add("education-entry");
-  entry.innerHTML = `
-    <p>학교 이름: ${data.schoolName}</p>
-    <p>전공: ${data.major}</p>
-    <p>학위: ${data.schoolStatus}</p>
-  `;
-
-  // 생성된 요소를 페이지에 추가
-  educationList.appendChild(entry);
+  educationArray.forEach((educationItem) => {
+    const educationDiv = document.createElement("div");
+    educationDiv.classList.add("education-entry");
+    educationDiv.setAttribute("data-education-id", educationItem.educationId);
+    educationDiv.innerHTML = `
+          <p>학교 이름: <p1>${educationItem.schoolName}</p1></p>
+          <p>전공: <p2>${educationItem.major}</p2></p>
+          <p>학위: <p3>${educationItem.schoolStatus}</p3></p>
+          <button onclick="deleteEducation(this, '${educationItem.educationId}')">삭제</button>
+          <button onclick="openEditModal('${educationItem.educationId}')">수정</button>
+      `;
+    educationList.appendChild(educationDiv);
+  });
 }
-
-// function confirmEducation() {
-//   // 각 정보를 가져옵니다.
-//   const confirmButton = document.getElementById("education_confirm_button");
-//   const displayButton = document.getElementById("education_display_button");
-//   const plusButton = document.getElementById("education_plus_button");
-
-//   // 각 select 요소를 선택합니다.
-//   const selectElements = document.querySelectorAll(".education-list select");
-//   const inputElements = document.querySelectorAll(".education-list input");
-
-//   // 각 select 요소에서 선택된 값을 저장할 변수를 선언합니다.
-//   let educationType, degree;
-//   let schoolName, major;
-
-//   // 첫 번째 select 요소에서 선택된 값을 가져옵니다.
-//   educationType = selectElements[0].value;
-//   // 두 번째 select 요소에서 선택된 값을 가져옵니다.
-//   degree = selectElements[1].value;
-
-//   schoolName = inputElements[0].value;
-//   major = inputElements[1].value;
-
-//   // 가져온 정보를 활용하여 추가 작업을 수행합니다.
-//   console.log("학력 구분:", educationType);
-//   console.log("학위:", degree);
-//   console.log("학교 이름:", schoolName);
-//   console.log("전공:", major);
-
-//   // 필요에 따라 가져온 정보를 활용하여 추가적인 작업을 수행합니다.
-
-//   const postData = {
-//     schoolName: schoolName,
-//     major: major,
-//     schoolStatus: degree,
-//   };
-
-//   fetch(`http://localhost:8080/mypage/education`, {
-//     method: "POST", // HTTP 메서드
-//     headers: {
-//       "Content-Type": "application/json", // 컨텐트 타입 설정
-//       // Accept: "application/json", // 서버로부터 JSON 응답을 기대함을 명시
-//     },
-//     body: JSON.stringify(postData), // JSON 문자열로 변환하여 데이터 전송
-//   })
-//     .then((res) => {
-//       if (!res.ok) {
-//         throw new Error("네트워크 오류입니다.");
-//       }
-//       return res.json(); // 응답을 JSON 형태로 파싱
-//     })
-//     .then((data) => {
-//       console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
-//       alert("학력 정보가 성공적으로 등록되었습니다.");
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error); // 에러 처리
-//       alert("학력 정보 등록에 실패하였습니다.");
-//     });
-
-//   // 가져온 정보를 화면에 출력합니다.
-//   const confirmedInfo = `학력 구분: ${educationType}\n학위: ${degree}\n학교이름: ${schoolName}\n학위: ${major}`;
-//   alert(confirmedInfo);
-
-//   selectElements.forEach((element) => (element.disabled = true));
-//   inputElements.forEach((element) => (element.disabled = true));
-
-//   displayButton.style.display = "block";
-//   confirmButton.style.display = "none";
-//   plusButton.style.display = "block";
-// }
 
 //학력 추가 기능
 function addEducation() {
@@ -429,87 +328,73 @@ function addEducation() {
     }
   };
 }
-// function addEducation() {
-//   const educationList = document.getElementById("educationList");
-//   const confirmButton = document.getElementById("education_confirm_button");
-//   const newEducationDiv = document.createElement("div"); // 새로운 div 생성
-//   const plusButton = document.getElementById("education_plus_button");
 
-//   if (educationList.style.display === "none") {
-//     educationList.style.display = "block";
-//     confirmButton.style.display = "block";
-//   }
+// 모달을 열고 폼에 데이터를 채우는 함수
+function openEditModal(educationId) {
+  // 기존 데이터 가져오기
+  const educationEntry = document.querySelector(
+    `[data-education-id="${educationId}"]`
+  );
+  console.log(educationId);
+  console.log(educationEntry);
+  const schoolName = educationEntry.querySelector("p1").textContent; // input의 값은 value로 가져옴
+  const major = educationEntry.querySelector("p2").textContent;
+  const schoolStatus = educationEntry.querySelector("p3").textContent;
 
-//   newEducationDiv.innerHTML = `
-//     <div>
-//       <select>
-//         <option value="">학력 구분 선택</option>
-//         <option value="elementry">초등학교 졸업</option>
-//         <option value="middle">중학교 졸업</option>
-//         <option value="high">고등학교 졸업</option>
-//         <option value="colleage">대학교,대학원 졸업</option>
-//       </select>
-//       <select>
-//         <option value="">학위 선택</option>
-//         <option value="재학중">대학(2,3년)</option>
-//         <option value="학사졸업">대학(4년)</option>
-//         <option value="석사졸업">대학원(석사)</option>
-//         <option value="박사졸업">대학원(박사)</option>
-//       </select>
-//       <input type="text" placeholder="대학교" />
-//       <input type="text" placeholder="전공" />
-//       <select>
-//         <option value="">졸업여부</option>
-//         <option value="bachelor">졸업</option>
-//         <option value="master">재학중</option>
-//         <option value="master">휴학중</option>
-//         <option value="phd">수료</option>
-//         <option value="phd">중퇴</option>
-//         <option value="phd">자퇴</option>
-//         <option value="phd">졸업예정</option>
-//       </select>
-//       <input type="date" placeholder="입학 년월" />
-//       <input type="date" placeholder="졸업 년월" />
-//       <button id = "education_delete_button" onclick="deleteEducation(this)">Remove</button>
-//     </div>
-//   `;
+  // 모달 폼에 데이터 채우기
+  document.getElementById("university").value = schoolName;
+  document.getElementById("major").value = major;
+  document.getElementById("schoolStatus").value = schoolStatus;
 
-//   educationList.appendChild(newEducationDiv);
-//   educationList.style.display = "block";
-//   plusButton.style.display = "block";
-// }
+  // 모달 표시
+  document
+    .getElementById("educationModal")
+    .setAttribute("data-education-id", educationId);
+  document.getElementById("educationModal").style.display = "block";
+}
 
-function editEducation(educationId, updateEducation) {
-  const selectElements = document.querySelectorAll(".education-list select");
-  const inputElements = document.querySelectorAll(".education-list input");
-  const confirmButton = document.getElementById("education_confirm_button");
-  const editButton = document.getElementById("education_edit_button");
-  // 입력 필드 및 선택 필드 활성화
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  // 수정 버튼 숨기기, 확인 버튼 보이기
-  editButton.style.display = "none";
+// 폼 데이터를 서버에 전송하는 함수
+function submitEducationUpdate() {
+  const educationId = document
+    .getElementById("educationModal")
+    .getAttribute("data-education-id");
+  const updatedEducation = {
+    schoolName: document.getElementById("university").value,
+    major: document.getElementById("major").value,
+    schoolStatus: document.getElementById("schoolStatus").value,
+  };
 
   fetch(`http://localhost:8080/mypage/education/${educationId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "...",
     },
-    body: JSON.stringify(updateEducation),
+    body: JSON.stringify(updatedEducation),
   })
-    .then((response) => response.json())
-    .then((data) => console.log(" 학력이 업데이트 되었습니다:", data))
-    .catch((error) => console.error("에러:", error));
+    .then((response) => {
+      if (!response.ok) throw new Error("Network response was not ok.");
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      alert("학력 정보가 성공적으로 수정되었습니다.");
+      document.getElementById("educationModal").style.display = "none";
+      getUserData();
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("학력 정보 업데이트에 실패했습니다.");
+    });
+}
 
-  selectElements.forEach((element) => (element.disabled = true));
-  inputElements.forEach((element) => (element.disabled = true));
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById("editModal").style.display = "none";
 }
 
 function deleteEducation(button, educationId) {
   const plusButton = document.getElementById("education_plus_button");
-
+  console.log(educationId);
   fetch(`http://localhost:8080/mypage/education/${educationId}`, {
     method: "DELETE",
   })
@@ -523,433 +408,17 @@ function deleteEducation(button, educationId) {
     .then((data) => {
       console.log(data);
       alert("학력 정보가 삭제되었습니다.");
+      const educationEntry = button.closest(".education-entry");
+      educationEntry.remove();
     })
     .catch((error) => {
       console.error("Error:", error);
       alert(`학력 정보 삭제에 실패하였습니다. (에러 코드: ${error.message})`);
     });
 
-  button.parentElement.remove();
-
   plusButton.style.display = "block";
 }
 
-function confirmAwards() {
-  const editButton = document.getElementById("awards_edit_button");
-  const confirmButton = document.getElementById("awards_confirm_button");
-
-  confirmButton.style.display = "none";
-  editButton.style.display = "block";
-
-  // 각 select 요소를 선택합니다.
-  const inputElements = document.querySelectorAll(".awards-list input");
-  const selectElements = document.querySelectorAll(".awards-list select");
-
-  // 각 요소에서 선택된 값을 저장할 변수를 선언합니다.
-  const awardDate = selectElements.value;
-  const awardName = inputElements[0].value;
-  const awardDetail = inputElements[1].value;
-
-  // 가져온 정보를 화면에 출력합니다.
-  console.log("수상 내용:", awardName);
-  console.log("수상 날짜:", awardDate);
-  console.log("부가 설명:", awardDetail);
-
-  const awardsData = {
-    title: awardName,
-    acqdate: awardDate,
-    details: awardDetail,
-  };
-
-  fetch("http://localhost:8080/mypage/award", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(awardsData),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("네트워크 오류입니다.");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Success:", data);
-      alert("수상 정보가 성공적으로 등록되었습니다.");
-      alert(confirmedInfo);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("수상 정보 등록에 실패하였습니다.");
-    });
-
-  selectElements.forEach((element) => (element.disabled = true));
-  inputElements.forEach((element) => (element.disabled = true));
-}
-
-function addAwards() {
-  const AwardsList = document.getElementById("awardsList");
-  const confirmButton = document.getElementById("awards_confirm_button");
-  const plusButton = document.getElementById("awards_plus_button");
-
-  if (AwardsList.style.display === "none") {
-    AwardsList.style.display = "block";
-  }
-  confirmButton.style.display = "block";
-  plusButton.style.display = "block";
-
-  const newAwardDiv = document.createElement("div");
-  newAwardDiv.innerHTML = `
-        <input type="text" placeholder="수상 내역" />
-        <input type="date" placeholder="수상 날짜" />
-        <input type="text" placeholder="부가 설명" />
-        <button id = "awards_delete_button" onclick="deleteAward(this)">Remove</button>
-    `;
-
-  // awardsList에 생성된 필드 추가
-  AwardsList.appendChild(newAwardDiv);
-}
-
-function editAwards(awardId, updateAward) {
-  const selectElements = document.querySelectorAll(".awards-list select");
-  const inputElements = document.querySelectorAll(".awards-list input");
-  const confirmButton = document.getElementById("awards_confirm_button");
-  const editButton = document.getElementById("awards_edit_button");
-  // 입력 필드 및 선택 필드 활성화
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  // 수정 버튼 숨기기, 확인 버튼 보이기
-  confirmButton.style.display = "block";
-  editButton.style.display = "none";
-
-  fetch(`http://localhost:8080/mypage/award/${awardId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(updateAward),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("수상 이력이 업데이트 되었습니다:", data))
-    .catch((error) => console.error("에러:", error));
-}
-
-function deleteAward(button, awardId) {
-  // 버튼의 부모 요소(입력 필드 컨테이너)를 찾아 제거
-  button.parentElement.remove();
-
-  fetch(`http://localhost:8080/mypage/award/${awardId}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: "...", // 인증이 필요하다면 추가
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("수상 내역이 삭제되었습니다.:", data))
-    .catch((error) => console.error("Error:", error));
-}
-
-function confirmProject() {
-  const editButton = document.getElementById("project_edit_button");
-  const confirmButton = document.getElementById("project_confirm_button");
-
-  confirmButton.style.display = "none";
-  editButton.style.display = "block";
-
-  // 각 select 요소를 선택합니다.
-  const inputElements = document.querySelectorAll(".project-list input");
-  const selectElements = document.querySelectorAll(".project-list select");
-
-  // 각 요소에서 선택된 값을 저장할 변수를 선언합니다.
-  const projectStartDate = inputElements[1].value;
-  const projectEndDate = inputElements[2].value;
-  const projectName = inputElements[0].value;
-  const projectDetail = inputElements[3].value;
-
-  // 가져온 정보를 화면에 출력합니다.
-  console.log("프로젝트 내용:", projectName);
-  console.log("프로젝트 시작 날짜:", projectStartDate);
-  console.log("프로젝트 종료 날짜:", projectEndDate);
-  console.log("프로젝트 설명:", projectDetail);
-
-  const projectData = {
-    title: projectName,
-    startDate: projectStartDate,
-    endDate: projectEndDate,
-    details: projectDetail,
-  };
-
-  fetch("http://localhost:8080/mypage/project", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(projectData),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("네트워크 오류입니다.");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Success:", data);
-      const confirmedInfo = `프로젝트 이름: ${projectName}\n프로젝트 시작 날짜: ${projectStartDate}\n프로젝트 종료 날짜: ${projectEndDate}\n프로젝트 설명: ${projectDetail}`;
-      alert("프로젝트 정보가 성공적으로 등록되었습니다.");
-      alert(confirmedInfo);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("프로젝트 정보 등록에 실패하였습니다.");
-    });
-
-  const confirmedInfo = `프로젝트 이름: ${projectName}\n프로젝트 진행 날짜: ${projectStartDate}\n프로젝트 종료 날짜: ${projectEndDate}프로젝트 설명: ${projectDetail}`;
-  alert(confirmedInfo);
-
-  selectElements.forEach((element) => (element.disabled = true));
-  inputElements.forEach((element) => (element.disabled = true));
-}
-
-function addProject() {
-  const projectList = document.getElementById("projectList");
-  const confirmButton = document.getElementById("project_confirm_button");
-  const plusButton = document.getElementById("project_plus_button");
-
-  if (projectList.style.display === "none") {
-    projectList.style.display = "block";
-  }
-  confirmButton.style.display = "block";
-  plusButton.style.display = "block";
-
-  const newProjectDiv = document.createElement("div");
-  newProjectDiv.innerHTML = `
-        <input type="text" placeholder="프로젝트 이름" />
-        <input type="date" placeholder="프로젝트 시작 날짜" />
-        <input type="date" placeholder="프로젝트 종료 날짜" />
-        <input type="text" placeholder="프로젝트 설명" />
-        <button id = "project_delete_button" onclick="deleteProject(this)">Remove</button>
-    `;
-
-  // awardsList에 생성된 필드 추가
-  projectList.appendChild(newProjectDiv);
-}
-
-function editProject(projectId, updateProject) {
-  const selectElements = document.querySelectorAll(".project-list select");
-  const inputElements = document.querySelectorAll(".project-list input");
-  const confirmButton = document.getElementById("project_confirm_button");
-  const editButton = document.getElementById("project_edit_button");
-  // 입력 필드 및 선택 필드 활성화
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  // 수정 버튼 숨기기, 확인 버튼 보이기
-  confirmButton.style.display = "block";
-  editButton.style.display = "none";
-
-  fetch(`http://localhost:8080/mypage/project/${projectId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(updateProject),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("프로젝트 이력이 업데이트 되었습니다:", data))
-    .catch((error) => console.error("에러:", error));
-}
-
-function deleteProject(button, projectId) {
-  // 버튼의 부모 요소(입력 필드 컨테이너)를 찾아 제거
-  button.parentElement.remove();
-
-  fetch(`http://localhost:8080/mypage/project/${projectId}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: "...", // 인증이 필요하다면 추가
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("프로젝트 내역이 삭제되었습니다.:", data))
-    .catch((error) => console.error("Error:", error));
-}
-
-function confirmCertificate() {
-  const editButton = document.getElementById("certificate_edit_button");
-  const confirmButton = document.getElementById("certificate_confirm_button");
-
-  confirmButton.style.display = "none";
-  editButton.style.display = "block";
-
-  // 각 select 요소를 선택합니다.
-  const inputElements = document.querySelectorAll(".certificate-list input");
-  const selectElements = document.querySelectorAll(".certificate-list select");
-
-  // 각 요소에서 선택된 값을 저장할 변수를 선언합니다.
-  const certificateDate = selectElements.value;
-  const certificateName = inputElements[0].value;
-
-  // 가져온 정보를 화면에 출력합니다.
-  console.log("자격증 이름:", certificateName);
-  console.log("자격증 취득 날짜:", certificateDate);
-
-  const certificateData = {
-    title: certificateName,
-    acqdate: certificateDate,
-  };
-
-  fetch("http://localhost:8080/mypage/certificate", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(certificateData),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("네트워크 오류입니다.");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Success:", data);
-      const confirmedInfo = `자격증 이름: ${certificateName}\n자격증 취득 날짜: ${certificateDate}`;
-      alert("certificate 정보가 성공적으로 등록되었습니다.");
-      alert(confirmedInfo);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("자격증 정보 등록에 실패하였습니다.");
-    });
-
-  const confirmedInfo = `자격증 이름: ${certificateName}\n자격증 취득 날짜: ${certificateDate}`;
-  alert(confirmedInfo);
-
-  selectElements.forEach((element) => (element.disabled = true));
-  inputElements.forEach((element) => (element.disabled = true));
-}
-
-function addCertificate() {
-  const certificateList = document.getElementById("certificateList");
-  const confirmButton = document.getElementById("certificate_confirm_button");
-  const plusButton = document.getElementById("certificate_plus_button");
-
-  if (certificateList.style.display === "none") {
-    certificateList.style.display = "block";
-  }
-  confirmButton.style.display = "block";
-  plusButton.style.display = "block";
-
-  const newCertificateDiv = document.createElement("div");
-  newCertificateDiv.innerHTML = `
-        <input type="text" placeholder="자격증 이름" />
-        <input type="date" placeholder="자격증 취득 날짜" />
-        <button id = "certificate_delete_button" onclick="deleteCertificate(this)">Remove</button>
-    `;
-
-  // awardsList에 생성된 필드 추가
-  certificateList.appendChild(newCertificateDiv);
-}
-
-function editCertificate(certificateId, updateCertificate) {
-  const selectElements = document.querySelectorAll(".certificate-list select");
-  const inputElements = document.querySelectorAll(".certificate-list input");
-  const confirmButton = document.getElementById("certificate_confirm_button");
-  const editButton = document.getElementById("certificate_edit_button");
-  // 입력 필드 및 선택 필드 활성화
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  // 수정 버튼 숨기기, 확인 버튼 보이기
-  confirmButton.style.display = "block";
-  editButton.style.display = "none";
-
-  fetch(`http://localhost:8080/mypage/certificate /${certificateId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "...",
-    },
-    body: JSON.stringify(updateCertificate),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("자격증 이력이 업데이트 되었습니다:", data))
-    .catch((error) => console.error("에러:", error));
-}
-
-function deleteCertificate(button, certificateId) {
-  // 버튼의 부모 요소(입력 필드 컨테이너)를 찾아 제거
-  button.parentElement.remove();
-
-  fetch(`http://localhost:8080/mypage/certificate/${certificateId}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: "...", // 인증이 필요하다면 추가
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log("자격증 내역이 삭제되었습니다.:", data))
-    .catch((error) => console.error("Error:", error));
-}
-
-function changeEducationDisplay() {
-  const selectElements = document.querySelectorAll(".education-list select");
-  const inputElements = document.querySelectorAll(".education-list input");
-  const displayButton = document.getElementById("education_display_button");
-  const editButton = document.getElementById("education_edit_button");
-
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  displayButton.style.display = "none";
-  editButton.style.display = "block";
-}
-
-function changAwardsDisplay() {
-  const selectElements = document.querySelectorAll(".awards-list select");
-  const inputElements = document.querySelectorAll(".awards-list input");
-  const displayButton = document.getElementById("awards_display_button");
-  const editButton = document.getElementById("awards_edit_button");
-
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  displayButton.style.display = "none";
-  editButton.style.display = "block";
-}
-
-function changeProjectDisplay() {
-  const selectElements = document.querySelectorAll(".project-list select");
-  const inputElements = document.querySelectorAll(".project-list input");
-  const displayButton = document.getElementById("project_display_button");
-  const editButton = document.getElementById("project_edit_button");
-
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  displayButton.style.display = "none";
-  editButton.style.display = "block";
-}
-
-function changeCertificateDisplay() {
-  const selectElements = document.querySelectorAll(".certificate-list select");
-  const inputElements = document.querySelectorAll(".certificate-list input");
-  const displayButton = document.getElementById("certificate_display_button");
-  const editButton = document.getElementById("certificate_edit_button");
-
-  selectElements.forEach((element) => (element.disabled = false));
-  inputElements.forEach((element) => (element.disabled = false));
-
-  displayButton.style.display = "none";
-  editButton.style.display = "block";
-}
 getUserData();
 isVisibleBtns();
 
