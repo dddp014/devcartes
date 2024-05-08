@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>게시판</title>
+    <link rel="stylesheet" href="/board/board.css" />
+  </head>
+  <body>
+    <!-- 네비게이션 -->
+    <div class="menu-container">
+      <ul>
+        <li><button onclick="goNetwork()">네트워크</button></li>
+        <li class="visible-btns">
+          <button onclick="goUserpage()">내 정보</button>
+        </li>
+        <li class="visible-btns">
+          <button onclick="logout()">로그아웃</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="main-container">
+      <!-- 게시판 목록 -->
+      <div class="post-list-container" display="block">
+        <div class="post-list">
+          <div class="post-title-wrap">
+            <!-- 아래 li 형식으로 구현을하는게 맞는가? js에서할것 -->
+            <ul>
+              <li><span class="post-title">게시글 1</span></li>
+              <li><span class="post-title">게시글 2</span></li>
+              <li><span class="post-title">게시글 3</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 작성버튼 -->
+      <div class="board-post-btn visible-btns">
+        <button onclick="goWritePost()">글 쓰기</button>
+      </div>
+
+      <!-- 게시물 작성 창 -->
+      <div
+        class="write-post-container"
+        id="write-post-container"
+        display="none"
+      >
+        <span>Title</span>
+        <input class="write-post-title input-box" id="write-post-title" />
+        <span>Contents</span>
+        <input class="write-post-contents input-box" id="write-post-contents" />
+        <button onclick="outWritePost()">취소</button>
+        <button onclick="registPost()">글 쓰기</button>
+      </div>
+
+      <!-- 게시판 내용 (1개보여줌) -->
+      <div class="post-container" id="post-container" display="none">
+        <div class="post-topwrap">
+          <span id="post-contents">내용</span>
+          <span id="post-writer-nickname">작성자 닉넹ㅁ</span>
+          <span id="post-written-time">작성된 시간</span>
+        </div>
+        <div class="post-contents-warp">
+          <span id="post-contents"></span>
+        </div>
+        <div class="post-comment-container">
+          <div class="post-comment"></div>
+          <!-- <div id="post-comments">댓글 목록</div> -->
+          <!-- 이런 형태로 리스트 쭉 div 로 계속 추가(js에서) -->
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="/board/board.js"></script>
+  </body>
+</html>
