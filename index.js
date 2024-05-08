@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const ejs = require("ejs");
 const path = require("path");
-const helmet = require("helmet");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
@@ -41,16 +40,11 @@ app.set("views", __dirname + "/views");
 
 //static 파일 경로 설정 (추가)
 app.use(express.static(path.join(__dirname, "views")));
-app.use(express.static(path.join(__dirname, "profileImg")));
+app.use(express.static(path.join(".", "uploads/profileImg")));
 
 // 화면 engine을 ejs로 설정
 app.set("view engine", "ejs");
 app.engine("html", require("ejs").renderFile);
-
-// Helmet 미들웨어 사용
-app.use(helmet());
-// Xss Protection만 하려면 위의 코드는 주석 처리 하고 아래만 사용
-// app.use(helmet.xXssProtection());
 
 app.get("/", (req, res) => {
   res.render("network/network.html");
