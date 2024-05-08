@@ -15,12 +15,14 @@ const BoardSchema = new Schema({
     type: String,
     required: true,
   },
-  createAt: {
+  createdAt: {
     type: Date,
     required: true,
     default: () => new Date(),
   },
 });
 
-BoardSchema.plugin(AutoIncrement, { inc_field: "boardId" });
+BoardSchema.plugin(AutoIncrement, {
+  inc_field: "boardId"
+});
 module.exports = BoardSchema;

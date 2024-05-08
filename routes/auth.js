@@ -213,4 +213,24 @@ router.delete("/", async (req, res, next) => {
   }
 });
 
+router.get("/true", async (req, res) => {
+  res.json({
+    status: true,
+    message: "로그인이 된 상태입니다.",
+    data: {
+      id: "r4GOOIxSW9",
+      email: "test@test.com",
+      name: "test by jaegeun",
+      description: "--설명--",
+    },
+  });
+});
+
+router.get("/false", async (req, res) => {
+  res.json({
+    status: false,
+    message: "로그인이 되지 않았습니다.",
+  });
+});
+
 module.exports = router;
