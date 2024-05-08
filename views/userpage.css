@@ -3,7 +3,7 @@
   src: url("continuous.ttf") format("truetype");
 }
 
-.content-Container {
+.content-container {
   display: flex;
   background-color: #eeeae0;
   margin: -1%;
@@ -59,7 +59,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.profile-Container {
+.profile-container {
   border-left: 5px solid #ccc;
   padding-left: 10px;
   margin-bottom: 10px;

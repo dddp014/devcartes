@@ -218,8 +218,8 @@ function editProfile() {
   //Edit 버튼 클릭 시 요소 무한생성 방지 조건문
   if (nameEdit.style.display != "none") {
     //div에 자식으로 등록
-    const nameContainer = document.querySelector(".name-Container");
-    const nicknameContainer = document.querySelector(".nickname-Container");
+    const nameContainer = document.querySelector(".name-container");
+    const nicknameContainer = document.querySelector(".nickname-container");
     const descriptionContainer = document.querySelector(
       ".description-Container"
     );
@@ -236,7 +236,7 @@ function editProfile() {
     descriptionValue.style.display = "none";
 
     //edit 버튼 숨기기
-    const profileEditButton = document.querySelector(".profile-edit-button");
+    const profileEditButton = document.querySelector(".profile_edit_button");
     profileEditButton.style.display = "none";
 
     //submit, cancel 버튼 생성
@@ -309,7 +309,7 @@ function editProfile() {
     description.style.display = "";
 
     const profile = document.querySelector(".profile");
-    const profileEditButton = document.querySelector(".profile-edit-button");
+    const profileEditButton = document.querySelector(".profile_edit_button");
     const cancelEditButton = profile.lastChild;
     const submitEditButton = cancelEditButton.previousSibling;
     submitEditButton.style.display = "";
@@ -373,7 +373,6 @@ function confirmEducation(event) {
     .then((data) => {
       console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
       alert("학력 정보가 성공적으로 등록되었습니다.");
-      document.getElementById("education level").value = "";
       document.getElementById("university").value = "";
       document.getElementById("major").value = "";
       document.getElementById("school_status").value = "";
@@ -478,7 +477,7 @@ function submitEducationUpdate() {
 
 // 모달 닫기 함수
 function closeModal() {
-  document.getElementById("editModal").style.display = "none";
+  document.getElementById("edit_modal").style.display = "none";
 }
 
 function deleteEducation(button, educationId) {
