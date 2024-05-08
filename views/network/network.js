@@ -25,6 +25,29 @@ async function getLoginStatus() {
   }
 }
 
+/** 모든 페이지의 데이터를 가져오는 함수 */
+async function getAllUser(currentPage) {
+  try {
+    // 첫 번째 페이지의 데이터를 가져옴
+    let allData = [];
+    let data = await getUsers(1);
+    const totalPages = data.totalPage;
+    allData = allData.concat(data.data);
+
+    // 다음 페이지가 있을 경우 반복적으로 데이터를 가져옴
+    while (currentPage < totalPages) {
+      currentPage++;
+      data = await getUsers(currentPage);
+      allData = allData.concat(data.data);
+    }
+
+    return allData;
+  } catch (error) {
+    console.error(error);
+    alert("데이터를 가져오는 중에 오류가 생겼습니다.");
+  }
+}
+
 /** Nav바 이벤트 핸들러 (로그인 이벤트 핸들러) */
 async function menuClickHandler() {
   try {
@@ -80,6 +103,7 @@ async function renderUserCard() {
   try {
     const params = new URLSearchParams(window.location.search);
     let currentPage = parseInt(params.get("page")) || 1;
+    const allUserData = await getAllUser(currentPage);
 
     const userData = await getUsers(currentPage);
     const container = document.querySelector(".usercard-container");
@@ -124,12 +148,12 @@ async function renderUserCard() {
       usercard.appendChild(cardinner);
       container.appendChild(usercard);
 
-      cardinner.addEventListener("click", () => {
-        if (user.profileimg && logintrue.status === true) {
+      usercard.addEventListener("click", () => {
+        if (logintrue.status === true) {
           // localStorage.setItem("tempId", user.userId);
           window.location.href = `/userpage?user=${user.userId}`;
         } else {
-          alert("데이터를 불러오는데 오류가 생겼습니다.");
+          alert("로그인 창으로 이동합니다.");
           window.location.href = "/login";
         }
       });

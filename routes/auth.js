@@ -101,7 +101,6 @@ router.get("/status", async (req, res) => {
   }
   const { email } = req.session.passport.user;
   const user = await User.findOne({ email }).lean();
-  console.log(user);
   res.json({
     status: true,
     message: "로그인이 된 상태입니다.",
