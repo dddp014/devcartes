@@ -1,6 +1,6 @@
 //메뉴바 이동
 function goNetwork() {
-  window.location.href = "/network";
+  window.location.href = "/";
 }
 
 function goUserpage() {
