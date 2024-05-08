@@ -61,10 +61,6 @@ app.get("/network", (req, res) => {
   res.render("network/network.html");
 });
 
-app.get("/board", (req, res) => {
-  res.render("board/board.html");
-});
-
 // 서버 설정
 app.use(express.json());
 

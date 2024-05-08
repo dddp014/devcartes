@@ -6,6 +6,10 @@ const {
   Certificate,
   Award,
   Counter,
+  Board,
+  Like,
+  Skill,
+  Comment,
 } = require("../models");
 const bcrypt = require("bcrypt");
 const { nanoid } = require("nanoid");
@@ -109,7 +113,6 @@ router.get("/status", async (req, res) => {
       email: user.email,
       nickname: user.nickname,
       name: user.name,
-      nickname: user.nickname,
     },
   });
 });
@@ -171,15 +174,18 @@ router.delete("/", async (req, res, next) => {
       throw new Unauthorized("로그인 후 이용 가능합니다.");
     }
 
-    const { userId } = req.session.passport.user;
+    const { userId, nickname } = req.session.passport.user;
     const { password } = req.body;
 
     if (!password) {
       throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
     }
 
-    const user = await User.findOne({ userId }).lean();
-    const hashedPassword = user.password;
+    // findOne({userId} 뒤에 "password"를 넣으면 password만 가져온다.
+    // user가 존재하면 user.password를 반환한다. then 함수형으로 작성하는 것 잊지 말 것!
+    const hashedPassword = await User.findOne({ userId }, "password")
+      .lean()
+      .then((user) => user?.password);
 
     // 입력받은 비밀번호가 DB의 암호화된 비밀번호와 일치하는지 확인
     const passwordCorrect = await bcrypt.compare(password, hashedPassword);
@@ -193,10 +199,35 @@ router.delete("/", async (req, res, next) => {
     const deleteProject = await Project.deleteMany({ userId }).lean();
     const deleteCertificate = await Certificate.deleteMany({ userId }).lean();
     const deleteAward = await Award.deleteMany({ userId }).lean();
+    const deleteSkill = await Skill.deleteMany({ userId }).lean();
     const deleteCounter = await Counter.deleteMany({
       "reference_value.userId": userId,
     }).lean();
     const deleteUser = await User.deleteOne({ userId }).lean();
+
+    // 작성한 게시글의 좋아요 데이터 삭제
+    const findBoard = await Board.find({ nickname });
+    for (const data of findBoard) {
+      await Like.findOneAndDelete({ boardId: data.boardId });
+    }
+    // 작성한 게시글 삭제
+    const deleteBoard = await Board.deleteMany({ nickname });
+
+    // 작성한 댓글 삭제
+    const deleteComment = await Comment.deleteMany({ nickname });
+
+    // 누른 좋아요 삭제
+    const existLike = await Like.find({ fromUser: nickname }).lean();
+    if (existLike) {
+      for (const data of existLike) {
+        const index = data.fromUser.indexOf(nickname);
+        data.fromUser.splice(index, 1);
+        await Like.updateOne(
+          { boardId: data.boardId },
+          { fromUser: data.fromUser }
+        ).lean();
+      }
+    }
 
     // DB에서 모든 자료를 다 삭제한 후에 로그아웃해서 세션까지 삭제 완료
     req.logout((err) => {
@@ -205,7 +236,7 @@ router.delete("/", async (req, res, next) => {
       }
       res.status(200).json({
         error: null,
-        message: `회원 탈퇴 성공. 총 ${deleteUser.deletedCount}개의 user, ${deleteEducation.deletedCount}개의 학력, ${deleteAward.deletedCount}개의 수상 이력, ${deleteProject.deletedCount}개의 프로젝트, ${deleteCertificate.deletedCount}개의 자격증, ${deleteCounter.deletedCount}개의 카운터 데이터가 삭제되었습니다.`,
+        message: `회원 탈퇴 성공. 총 ${deleteUser.deletedCount}개의 user, ${deleteEducation.deletedCount}개의 학력, ${deleteAward.deletedCount}개의 수상 이력, ${deleteProject.deletedCount}개의 프로젝트, ${deleteCertificate.deletedCount}개의 자격증, ${deleteSkill.deletedCount}개의 스킬, ${deleteBoard.deletedCount}개의 게시글, ${deleteComment.deletedCount}개의 댓글, ${deleteCounter.deletedCount}개의 카운터 데이터가 삭제되었습니다.`,
       });
     });
   } catch (err) {

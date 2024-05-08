@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="./userpage.css" />
+  </head>
+  <body>
+    <!-- 상단 네비게이션 바 -->
+    <div class="navbar">
+      <p class="logo">Devcartes</p>
+    </div>
+    <div class="container">
+      <div class="profile">
+        <!-- 프로필 정보 -->
+        <img
+          src="./studyhard.jpeg"
+          alt="프로필 이미지"
+          style="width: 150px; height: 150px"
+        />
+        <div class="name-Container">
+          <h3 class="Name">데브카르트</h3>
+        </div>
+        <div class="email-Container">
+          <h4 class="Email">Email@email.com</h4>
+        </div>
+        <div class="description-Container">
+          <p class="Description">---설명---</p>
+        </div>
+        <button class="profileEditButton editBtns" onclick="editProfile()">
+          Edit
+        </button>
+      </div>
+      <div class="education">
+        <!-- 학력 정보 -->
+        <div class="education-title">
+          <h2>
+            학력
+            <button id="education_plus_button" onclick="addEducation()">
+              + 추가
+            </button>
+          </h2>
+        </div>
+        <div class="education-list" id="educationList"></div>
+        <div class="editBtns">
+          <button
+            id="education_edit_button"
+            onclick="editEducation()"
+            style="display: none"
+          >
+            edit
+          </button>
+          <button
+            id="education_display_button"
+            onclick="changeEducationDisplay()"
+            style="display: none"
+          >
+            수정 하기
+          </button>
+        </div>
+      </div>
+      <div class="awards">
+        <!-- 학력 정보 -->
+        <h2>수상 내역</h2>
+        <div class="awards-list" id="awardsList" style="display: none">
+          <div></div>
+        </div>
+        <div class="editBtns">
+          <button
+            id="awards_confirm_button"
+            onclick="confirmAwards()"
+            style="display: none"
+          >
+            확인
+          </button>
+          <button
+            id="awards_edit_button"
+            onclick="editAwards()"
+            style="display: none"
+          >
+            edit
+          </button>
+          <button
+            id="awards_delete_button"
+            onclick="deleteAwards()"
+            style="display: none"
+          >
+            삭제
+          </button>
+          <button id="awards_plus_button" onclick="addAwards()">+</button>
+        </div>
+      </div>
+      <div class="project">
+        <!-- 학력 정보 -->
+        <h2>프로젝트 내역</h2>
+        <div class="project-list" id="projectList" style="display: none">
+          <div></div>
+        </div>
+        <div class="editBtns">
+          <button
+            id="project_confirm_button"
+            onclick="confirmProject()"
+            style="display: none"
+          >
+            확인
+          </button>
+          <button
+            id="project_edit_button"
+            onclick="editProject()"
+            style="display: none"
+          >
+            edit
+          </button>
+          <button
+            id="project_delete_button"
+            onclick="deleteProject()"
+            style="display: none"
+          >
+            삭제
+          </button>
+          <button id="project_plus_button" onclick="addProject()">+</button>
+        </div>
+      </div>
+      <div class="certificate">
+        <!-- 학력 정보 -->
+        <h2>자격증 내역</h2>
+        <div
+          class="certificate-list"
+          id="certificateList"
+          style="display: none"
+        ></div>
+        <div class="editBtns">
+          <button
+            id="certificate_confirm_button"
+            onclick="confirmCertificate()"
+            style="display: none"
+          >
+            확인
+          </button>
+          <button
+            id="certificate_edit_button"
+            onclick="editCertificate()"
+            style="display: none"
+          >
+            edit
+          </button>
+          <button
+            id="certificate_delete_button"
+            onclick="deleteCertificate()"
+            style="display: none"
+          >
+            삭제
+          </button>
+          <button id="certificate_plus_button" onclick="addCertificate()">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="./userpage.js"></script>
+    <!-- 모달 창 -->
+    <div id="educationModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="educationForm">
+          <select>
+            <option value="">학력 구분 선택</option>
+            <option value="elementry">초등학교 졸업</option>
+            <option value="middle">중학교 졸업</option>
+            <option value="high">고등학교 졸업</option>
+            <option value="colleage">대학교,대학원 졸업</option>
+          </select>
+          <select id="schoolStatus">
+            <option value="">학위 선택</option>
+            <option value="재학중">대학(2,3년)</option>
+            <option value="학사졸업">대학(4년)</option>
+            <option value="석사졸업">대학원(석사)</option>
+            <option value="박사졸업">대학원(박사)</option>
+          </select>
+          <input type="text" id="university" placeholder="대학교" />
+          <input type="text" id="major" placeholder="전공" />
+          <select id="graduationStatus">
+            <option value="">졸업여부</option>
+            <option value="graduated">졸업</option>
+            <option value="enrolled">재학중</option>
+            <option value="leave">휴학중</option>
+            <option value="completed">수료</option>
+            <option value="dropout">중퇴</option>
+            <option value="selfDropout">자퇴</option>
+            <option value="graduateIntended">졸업예정</option>
+          </select>
+          <input type="date" placeholder="입학 년월" />
+          <input type="date" placeholder="졸업 년월" />
+          <button id="education_delete_button" onclick="deleteEducation(this)">
+            취소
+          </button>
+          <button
+            type="button"
+            id="education_confirm_button"
+            onclick="confirmEducation(event)"
+          >
+            확인
+          </button>
+          <button
+            type="button"
+            class="education-edit-button"
+            onclick="submitEducationUpdate()"
+          >
+            수정
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
