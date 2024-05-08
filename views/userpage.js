@@ -285,6 +285,7 @@ function confirmEducation(event) {
     .then((data) => {
       console.log("Success:", data); // 성공적으로 데이터를 받으면 로그에 출력
       alert("학력 정보가 성공적으로 등록되었습니다.");
+      document.getElementById("education level").value = "";
       document.getElementById("university").value = "";
       document.getElementById("major").value = "";
       document.getElementById("schoolStatus").value = "";
