@@ -153,7 +153,7 @@ input {
   border-radius: 15px;
   background-color: rgb(233, 233, 233);
 }
-.profile_edit_button {
+.profile-edit-button {
   margin-right: 10px;
   background-color: #ffee83;
   color: #000000;
@@ -190,12 +190,12 @@ input {
   cursor: pointer;
 }
 
-.editBtns {
+.edit-btns {
   display: flex;
   justify-content: start; /* 버튼을 컨테이너 시작 부분에 정렬 */
 }
 
-.editBtns button {
+.edit-btns button {
   margin-right: 10px;
   margin-bottom: 10px; /* 오른쪽 여백 추가 */
 }

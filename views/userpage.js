@@ -167,13 +167,13 @@ fetch("http://localhost:8080/auth/status")
   })
   .catch((error) => console.error("Error:", error));
 
-// edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 editBtns이라는 class 할당해서 일괄 display 설정
+// edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 edit-btns이라는 class 할당해서 일괄 display 설정
 function isVisibleBtns() {
   fetch("http://localhost:8080/auth/status")
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      targets = document.querySelectorAll(".editBtns");
+      targets = document.querySelectorAll(".edit-btns");
       targets.forEach((target) => {
         if (data.data.userId == massId) {
           target.style.display = "block";
@@ -236,7 +236,7 @@ function editProfile() {
     descriptionValue.style.display = "none";
 
     //edit 버튼 숨기기
-    const profileEditButton = document.querySelector(".profile_edit_button");
+    const profileEditButton = document.querySelector(".profile-edit-button");
     profileEditButton.style.display = "none";
 
     //submit, cancel 버튼 생성
@@ -309,7 +309,7 @@ function editProfile() {
     description.style.display = "";
 
     const profile = document.querySelector(".profile");
-    const profileEditButton = document.querySelector(".profile_edit_button");
+    const profileEditButton = document.querySelector(".profile-edit-button");
     const cancelEditButton = profile.lastChild;
     const submitEditButton = cancelEditButton.previousSibling;
     submitEditButton.style.display = "";
@@ -335,13 +335,13 @@ function editProfile() {
 }
 
 function confirmEducation(event) {
-  const form = document.getElementById("educationModal");
+  const form = document.getElementById("education_modal");
 
   event.preventDefault();
 
   const schoolName = document.getElementById("university").value; // 대학교 이름
   const major = document.getElementById("major").value; // 전공
-  const schoolStatus = document.getElementById("schoolStatus").value; // 전공
+  const schoolStatus = document.getElementById("school_status").value; // 전공
 
   console.log(typeof schoolName);
   console.log(typeof major);
@@ -375,7 +375,7 @@ function confirmEducation(event) {
       alert("학력 정보가 성공적으로 등록되었습니다.");
       document.getElementById("university").value = "";
       document.getElementById("major").value = "";
-      document.getElementById("schoolStatus").value = "";
+      document.getElementById("school_status").value = "";
       form.style.display = "none";
       getUserData();
     })
@@ -387,7 +387,7 @@ function confirmEducation(event) {
 
 //확정된 정보를 div로 추가하기
 function updateEducationList(educationArray) {
-  const educationList = document.getElementById("educationList");
+  const educationList = document.getElementById("education-list");
   educationList.innerHTML = ""; // 기존 목록을 초기화
 
   educationArray.forEach((educationItem) => {
@@ -407,7 +407,7 @@ function updateEducationList(educationArray) {
 
 //학력 추가 기능
 function addEducation() {
-  var modal = document.getElementById("educationModal");
+  var modal = document.getElementById("education_modal");
   modal.style.display = "block";
 
   window.onclick = function (event) {
@@ -432,24 +432,24 @@ function openEditModal(educationId) {
   // 모달 폼에 데이터 채우기
   document.getElementById("university").value = schoolName;
   document.getElementById("major").value = major;
-  document.getElementById("schoolStatus").value = schoolStatus;
+  document.getElementById("school_status").value = schoolStatus;
 
   // 모달 표시
   document
-    .getElementById("educationModal")
+    .getElementById("education_modal")
     .setAttribute("data-education-id", educationId);
-  document.getElementById("educationModal").style.display = "block";
+  document.getElementById("education_modal").style.display = "block";
 }
 
 // 폼 데이터를 서버에 전송하는 함수
 function submitEducationUpdate() {
   const educationId = document
-    .getElementById("educationModal")
+    .getElementById("education_modal")
     .getAttribute("data-education-id");
   const updatedEducation = {
     schoolName: document.getElementById("university").value,
     major: document.getElementById("major").value,
-    schoolStatus: document.getElementById("schoolStatus").value,
+    schoolStatus: document.getElementById("school_status").value,
   };
 
   fetch(`http://localhost:8080/mypage/education/${educationId}`, {
@@ -466,7 +466,7 @@ function submitEducationUpdate() {
     .then((data) => {
       console.log(data);
       alert("학력 정보가 성공적으로 수정되었습니다.");
-      document.getElementById("educationModal").style.display = "none";
+      document.getElementById("education-modal").style.display = "none";
       getUserData();
     })
     .catch((error) => {
