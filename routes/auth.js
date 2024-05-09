@@ -14,7 +14,8 @@ const {
 const bcrypt = require("bcrypt");
 const { nanoid } = require("nanoid");
 const passport = require("passport");
-const { Unauthorized, BadRequest, Conflict } = require("../middlewares");
+const { startSession } = require("mongoose");
+const { Unauthorized, BadRequest, Conflict } = require("../errors");
 
 const router = Router();
 
@@ -194,39 +195,62 @@ router.delete("/", async (req, res, next) => {
       throw new Unauthorized("비밀번호가 일치하지 않습니다."); // 401 에러
     }
 
-    // DB에서 userId가 일치하는 각 MVP 자료들을 찾아서 삭제
-    const deleteEducation = await Education.deleteMany({ userId }).lean();
-    const deleteProject = await Project.deleteMany({ userId }).lean();
-    const deleteCertificate = await Certificate.deleteMany({ userId }).lean();
-    const deleteAward = await Award.deleteMany({ userId }).lean();
-    const deleteSkill = await Skill.deleteMany({ userId }).lean();
-    const deleteCounter = await Counter.deleteMany({
-      "reference_value.userId": userId,
-    }).lean();
-    const deleteUser = await User.deleteOne({ userId }).lean();
+    // mongoose transaction
+    const session = await startSession();
+    try {
+      session.startTransaction();
 
-    // 작성한 게시글의 좋아요 데이터 삭제
-    const findBoard = await Board.find({ nickname });
-    for (const data of findBoard) {
-      await Like.findOneAndDelete({ boardId: data.boardId });
-    }
-    // 작성한 게시글 삭제
-    const deleteBoard = await Board.deleteMany({ nickname });
+      // DB에서 userId가 일치하는 각 MVP 자료들을 찾아서 삭제
+      const deleteEducation = await Education.deleteMany({ userId }).lean();
+      const deleteProject = await Project.deleteMany({ userId }).lean();
+      const deleteCertificate = await Certificate.deleteMany({ userId }).lean();
+      const deleteAward = await Award.deleteMany({ userId }).lean();
+      const deleteSkill = await Skill.deleteMany({ userId }).lean();
+      const deleteCounter = await Counter.deleteMany({
+        "reference_value.userId": userId,
+      }).lean();
+      const deleteUser = await User.deleteOne({ userId }).lean();
 
-    // 작성한 댓글 삭제
-    const deleteComment = await Comment.deleteMany({ nickname });
-
-    // 누른 좋아요 삭제
-    const existLike = await Like.find({ fromUser: nickname }).lean();
-    if (existLike) {
-      for (const data of existLike) {
-        const index = data.fromUser.indexOf(nickname);
-        data.fromUser.splice(index, 1);
-        await Like.updateOne(
-          { boardId: data.boardId },
-          { fromUser: data.fromUser }
-        ).lean();
+      // 작성한 게시글의 좋아요 데이터 삭제
+      const findBoard = await Board.find({ nickname });
+      for (const data of findBoard) {
+        await Like.findOneAndDelete({ boardId: data.boardId });
       }
+      // 작성한 게시글 삭제
+      const deleteBoard = await Board.deleteMany({ nickname });
+
+      // 작성한 댓글 삭제
+      const deleteComment = await Comment.deleteMany({ nickname });
+
+      // 누른 좋아요 삭제
+      const existLike = await Like.find({ fromUser: nickname }).lean();
+      if (existLike) {
+        for (const data of existLike) {
+          const index = data.fromUser.indexOf(nickname);
+          data.fromUser.splice(index, 1);
+          await Like.updateOne(
+            { boardId: data.boardId },
+            { fromUser: data.fromUser }
+          ).lean();
+        }
+      }
+      await session.commitTransaction();
+      return (
+        deleteEducation,
+        deleteProject,
+        deleteCertificate,
+        deleteAward,
+        deleteSkill,
+        deleteCounter,
+        deleteUser,
+        deleteBoard,
+        deleteComment
+      );
+    } catch (err) {
+      await session.abortTransaction();
+      next(err);
+    } finally {
+      session.endSession();
     }
 
     // DB에서 모든 자료를 다 삭제한 후에 로그아웃해서 세션까지 삭제 완료
