@@ -286,7 +286,7 @@ async function init() {
   });
   boardElem.addEventListener("click", goToBoard);
   aboutElem.addEventListener("click", () => {
-    window.location.href = "/aboutus";
+    window.location.href = "/aboutUs";
   });
 
   //페이지네이션 관련 이벤트리스너 추가

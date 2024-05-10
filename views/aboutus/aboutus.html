@@ -1,44 +1,117 @@
 <!DOCTYPE html>
-<html lang="ko"></html>
-<head>
-  <meta charset="UTF-8" />
-  <title>header</title>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Dev.cartes!</title>
 
-  <link rel="stylesheet" href="/main.css" />
-  <link rel="stylesheet" href="/layout/header.css" />
-</head>
-<body>
-  <div class="header">
-    <div class="logo">
-      <a href="/">
-        <img class="logo-image" src="/img/logo.png" alt="logo" />
-      </a>
-    </div>
-    <div class="menu">
-      <div class="menu-items home">
-        <a href="/">홈</a>
-      </div>
-      <div class="menu-items board">
-        <a href="/board">게시판</a>
-      </div>
-      <div class="menu-items aboutUs">
-        <a href="/aboutUs">About Us</a>
-      </div>
-    </div>
-    <div class="user-status">
-      <!-- 로그인 전 -->
-      <div class="user-status-item-left login">
-        <a href="/login">로그인</a>
-      </div>
-      <!-- 로그인 후 -->
-      <div class="user-status-item-left userpage">
-        <a>내 정보</a>
-      </div>
-      <div class="user-status-item logout">
-        <a>로그아웃</a>
-      </div>
-    </div>
-  </div>
-  <script src="header.js"></script>
-  <script src="/aboutus/aboutus.js"></script>
-</body>
+        <link rel="stylesheet" href="/main.css" />
+        <link rel="stylesheet" href="/layout/header.css" />
+        <link rel="stylesheet" href="/aboutUs/aboutUs.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- header -->
+            <div class="header">
+                <div class="logo">
+                    <a href="/">
+                        <img class="logo-image" src="/img/logo.png" alt="logo" />
+                    </a>
+                </div>
+                <div class="menu">
+                    <div class="menu-items home">
+                        <a href="/">홈</a>
+                    </div>
+                    <div class="menu-items board">
+                        <a href="/board">게시판</a>
+                    </div>
+                    <div class="menu-items aboutUs">
+                        <a href="/aboutUs">About Us</a>
+                    </div>
+                </div>
+                <div class="user-status">
+                    <!-- 로그인 전 -->
+                    <div class="user-status-item-left login">
+                        <a href="/login">로그인</a>
+                    </div>
+                    <div class="user-status-item join">
+                        <a href="/join">회원가입</a>
+                    </div>
+                    <!-- 로그인 후 -->
+                    <!-- <div class="user-status-item-left login">
+                        <a href="/login">내 정보</a>
+                    </div>
+                    <div class="user-status-item join">
+                        <a href="/join">로그아웃</a>
+                    </div> -->
+                </div>
+            </div>
+    
+            <!-- contents -->
+            <div class="contents">
+                <!-- Dev.cartes Team -->
+                <div class="contents-container aboutUs-wrap">
+                    <div class="aboutUs-title">Dev.cartes!</div>
+                    <div class="division-name">프론트엔드</div>
+                    <div class="division-container">
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_1.webp" alt="aboutUs-Img" />
+                            </div>
+                            <div class="member-name">정유경</div>
+                        </div>
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_2.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">김민규</div>
+                        </div>
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_3.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">김재근</div>
+                        </div>
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_4.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">박기완</div>
+                        </div>
+                    </div>
+                    <div class="division-name">백엔드</div>
+                    <div class="division-container">
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_5.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">박수정</div>
+                        </div>
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_6.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">이유민</div>
+                        </div>
+                        <div class="member-container">
+                            <div class="member-img-wrap">
+                                <img class="member-img" src="/img/aboutUs_7.webp" alt="member-Img" />
+                            </div>
+                            <div class="member-name">채명희</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kakao Map API -->
+                <div class="contents-container">
+                    <div class="map-title">Dev.cartes 위치</div>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="/main.js"></script>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%= javascriptkey %>"></script>
+        <script src="/aboutUs/aboutUs.js"></script> 
+    </body>
+</html>

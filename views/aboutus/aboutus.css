@@ -1,9 +1,59 @@
-.contents {
-  padding: 100px 85px;
+.contents-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.menu-items,
-.user-status-item,
-.user-status-item-left {
-  cursor: pointer;
+.aboutUs-wrap {
+    margin-bottom: 70px;
+}
+
+.aboutUs-title {
+    font-size: 23px;
+    font-weight: bold;
+    padding-bottom: 40px;
+    color: #ff0000;
+}
+
+.division-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 100px;
+}
+
+.division-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.member-container {
+    width: 300px;
+}
+
+.member-name {
+
+}
+
+.member-img-wrap {
+    
+}
+
+.member-img {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+.map-title {
+    font-size: 23px;
+    font-weight: bold;
+    padding-bottom: 40px;
+}
+
+#map {
+    width:600px;
+    height:400px;
 }
