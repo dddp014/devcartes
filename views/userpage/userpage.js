@@ -118,15 +118,15 @@ function cancelEditProfile() {
   document.getElementById("cancel_edit_button").remove();
 }
 
-// mypage/project get 테스트
-fetch("http://localhost:8080/auth/status")
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data); // 전체 데이터 구조 확인
-  })
-  .catch((error) => console.error("Error:", error));
+// // mypage/project get 테스트
+// fetch("http://localhost:8080/auth/status")
+//   .then((response) => response.json())
+//   .then((data) => {
+//     console.log(data); // 전체 데이터 구조 확인
+//   })
+//   .catch((error) => console.error("Error:", error));
 
-// edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 edit-btns이라는 class 할당해서 일괄 display 설정
+// edit, 추가, 수정 등 내 페이지일때만 버튼 활성화되게 해당 div 나 button 에 editBtns이라는 class 할당해서 일괄 display 설정
 function isVisibleBtns() {
   const params = new URLSearchParams(window.location.search);
   let currentuser = params.get("user");
@@ -153,6 +153,7 @@ function getUserData() {
     .then((res) => res.json())
     .then((data) => {
       //학력, 수강이력 등 정보는 각각 data.education , data.awards 등으로 변수 정해서 해결할것
+      console.log(`${currentuser}`);
       document.querySelector(".Name").innerText = data.user.name;
       document.querySelector(".Nickname").innerText = data.user.nickname;
       document.querySelector(".Email").innerText = data.user.email;
@@ -178,8 +179,6 @@ function getUserData() {
 function editProfile() {
   // console.log(nameContainer.childNodes[3]) = Name;
   // console.log(nameContainer.childNodes[4]) = nameEdit;
-  //console.log(profile.childeNodes[5]) = submitEditButon;
-  //console.log(profile.childeNodes[6]) = cancelEditButon;
 
   // 프로필 편집 로직
   //입력창 및 타이틀 생성 함수로부터 변수 반환
@@ -1287,20 +1286,6 @@ function passwordChangeConfirm() {
     }
   });
 }
-function gotologin() {
-  modalClose();
-  //변경된 비밀번호로 다시 로그인하게 유도
-  fetch("http://localhost:8080/auth/logout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({}),
-  });
-  localStorage.setItem("goTo", "login");
-  window.location.href = "http://localhost:8080";
-}
-
 function passwordCompare() {
   const pw = document.getElementById("setpw").value;
   const pwchk = document.getElementById("setpwchk").value;
@@ -1315,6 +1300,13 @@ function passwordCompare() {
     document.getElementById("alert-text").style.display = "none";
   } else {
     document.getElementById("alert-text").style.display = "block";
+  }
+}
+function passwordCheck(pw, pwchk) {
+  if (pw == pwchk) {
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -1362,6 +1354,20 @@ function delaccmodalOpen(txtNum) {
   document.getElementById("delete_account_modal").style.display = "block";
 }
 
+function gotologin() {
+  modalClose();
+  //변경된 비밀번호로 다시 로그인하게 유도
+  fetch("http://localhost:8080/auth/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+  localStorage.setItem("goTo", "login");
+  window.location.href = "http://localhost:8080";
+}
+
 function clear() {
   const target = document.querySelectorAll(".InputBox");
   target.forEach((target) => {
@@ -1378,12 +1384,6 @@ function modalbtnhide() {
   const target = document.querySelectorAll(".modal_btn");
   target.forEach((target) => {
     target.style.display = "none";
-  });
-}
-function movebtnshow() {
-  const target = document.querySelectorAll(".modal_move_btn");
-  target.forEach((target) => {
-    target.style.display = "";
   });
 }
 function changeModalText(txtNum, n) {
@@ -1437,12 +1437,4 @@ function modalClose() {
   });
   document.getElementById("delete_account_modal").style.display = "none";
   document.getElementById("password_change_modal").style.display = "none";
-}
-
-function passwordCheck(pw, pwchk) {
-  if (pw == pwchk) {
-    return true;
-  } else {
-    return false;
-  }
 }

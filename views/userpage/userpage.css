@@ -1,7 +1,3 @@
-@font-face {
-  font-family: "continuous";
-  src: url("../continuous.ttf") format("truetype");
-}
 /* login에서 가져온 속성 */
 .btnbox {
   border-color: gray;
@@ -16,10 +12,6 @@
   flex-direction: column;
   justify-content: flex-end;
 }
-
-/* .delete-account {
-  display: flex;
-} */
 .modal_btn {
   display: block;
   margin-top: 10px;
@@ -39,9 +31,9 @@
 #move_btn2 {
   display: none;
 }
+
 .modal .modal_popup {
-  /*팝업*/
-  position: absolute;
+  position: absolute; /*팝업*/
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -63,36 +55,13 @@
   width: 200px;
 }
 /* ------- */
+.contents {
+  padding: 100px 85px;
+}
 .content-container {
   display: flex;
-  background-color: #eeeae0;
-  margin: -1%;
 }
 
-.navbar {
-  display: flex;
-  flex-direction: column;
-  width: 25%;
-  padding: 30px 0 35% 0;
-  /* background-color: rgba(216, 107, 4, 0.692); */
-  background-color: #eeeae0;
-}
-
-.navbar-content {
-  font-family: "continuous", Arial, sans-serif;
-  font-size: 24px;
-  padding: 2.5% 0 2.5% 0;
-  margin: 0 10% 0 10%;
-  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
-}
-.navbar-content:nth-last-child(1) {
-  box-shadow: none;
-}
-.logo {
-  font-family: "continuous", Arial, sans-serif;
-  font-size: 52px;
-  padding: 0 0 30% 10%;
-}
 ._h4 {
   margin-block-end: 0.1em;
   margin-block-start: 0.1em;
@@ -102,9 +71,9 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container {
+.Container {
   display: flex;
-  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  flex-direction: column;
   width: 100%;
   background-color: white;
 }
@@ -128,10 +97,9 @@ body {
   padding-left: 10px;
   margin-bottom: 10px;
 }
-
-.education-list {
+*/ .education-list {
   display: flex;
-  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
   margin: 0;
@@ -143,7 +111,7 @@ body {
 .certificate-list,
 .skill-list {
   display: flex;
-  flex-direction: column; /* 항목들을 수직으로 쌓습니다 */
+  flex-direction: column;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -152,28 +120,28 @@ body {
 .education-list > div {
   display: flex;
   justify-content: space-between;
-  align-items: center; /*중앙 정렬*/
-  margin-bottom: 10px; /*하단 여백 */
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .award-list > div {
   display: flex;
-  margin-bottom: 10px; /* 하단 여백 */
+  margin-bottom: 10px;
 }
 
 .project-list > div {
   display: flex;
-  margin-bottom: 10px; /* 하단 여백 */
+  margin-bottom: 10px;
 }
 
 .certificate-list > div {
   display: flex;
-  margin-bottom: 10px; /* 하단 여백 */
+  margin-bottom: 10px;
 }
 
 .skill-list > div {
   display: flex;
-  margin-bottom: 10px; /* 하단 여백 */
+  margin-bottom: 10px;
 }
 /* select 박스와 input 필드의 스타일 */
 .education-list select,

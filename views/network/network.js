@@ -129,7 +129,7 @@ async function renderUserCard() {
       title.className = "title";
       content.className = "content";
 
-      userimage.src = `/${user.profileImg}`;
+      userimage.src = user.profileImg;
       userimage.alt = user.profileImg;
 
       cardfront.appendChild(userimage);
@@ -196,19 +196,26 @@ async function updateButton() {
 
 /** 로그인 상태에 따라 Nav바를 업데이트하는 함수 */
 async function updateMenu() {
-  const userpageElem = document.querySelector(".userpage");
-  const loginElem = document.querySelector(".login");
-  const logoutElem = document.querySelector(".logout");
+  const loginElem = document.querySelector(".user-status-item-left.login");
+  const joinElem = document.querySelector(".user-status-item.join");
+
+  const userpageElem = document.querySelector(
+    ".user-status-item-left.userpage"
+  );
+  const logoutElem = document.querySelector(".user-status-item.logout");
+
   const logintrue = await getLoginStatus();
 
   if (logintrue.status === true) {
-    logoutElem.style.display = "block";
     userpageElem.style.display = "block";
-    loginElem.style.display = "none"; //none;
+    logoutElem.style.display = "block";
+    loginElem.style.display = "none";
+    joinElem.style.display = "none";
   } else {
-    userpageElem.style.display = "none"; //none;
-    loginElem.style.display = "block";
+    userpageElem.style.display = "none";
     logoutElem.style.display = "none";
+    loginElem.style.display = "block";
+    joinElem.style.display = "block";
   }
 }
 
@@ -247,15 +254,19 @@ async function init() {
   updateMenu();
   renderUserCard();
 
-  const userpageElem = document.querySelector(".userpage");
-  const loginElem = document.querySelector(".login");
-  const logoutElem = document.querySelector(".logout");
-  const boardElem = document.querySelector(".board");
+  const loginElem = document.querySelector(".user-status-item-left.login");
+  const joinElem = document.querySelector(".user-status-item.join");
+  const userpageElem = document.querySelector(
+    ".user-status-item-left.userpage"
+  );
+  const logoutElem = document.querySelector(".user-status-item.logout");
+  const boardElem = document.querySelector(".menu-items.board");
 
-  userpageElem.addEventListener("click", menuClickHandler);
   loginElem.addEventListener("click", menuClickHandler);
+  userpageElem.addEventListener("click", menuClickHandler);
+
   boardElem.addEventListener("click", () => {
-    window.location.href = "/board";
+    window.location.href = "/board/?page=1";
   });
 
   //로그아웃 이벤트리스너 추기

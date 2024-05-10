@@ -3,124 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>마이페이지</title>
+    <title>Dev.cartes!</title>
     <link rel="stylesheet" href="./userpage.css" />
     <link rel="stylesheet" href="/main.css" />
     <link rel="stylesheet" href="/layout/header.css" />
   </head>
   <body>
-    <div class="container">
-      <!-- header -->
-      <div class="header">
-        <div class="logo">
-          <a href="/">
-            <img class="logo-image" src="/img/logo.png" alt="logo" />
-          </a>
+    <!-- 상단 네비게이션 바 -->
+    <div
+      class="content-container"
+      style="display: flex; background-color: #eeeae0"
+    >
+      <nav class="navbar">
+        <div class="logo">Devcartes</div>
+        <div>
+          <div class="navbar-content">Login</div>
+          <div class="navbar-content">Sign up</div>
+          <div class="navbar-content">About us</div>
         </div>
-        <div class="menu">
-          <div class="menu-items home">
-            <a href="/">홈</a>
+      </nav>
+      <div class="container">
+        <div class="profile">
+          <div class="imageprofile-container">
+            <!-- 프로필 정보 -->
+            <img
+              src="./studyhard.jpeg"
+              alt="프로필 이미지"
+              style="width: 150px; height: 150px"
+            />
+            <div class="profile-container">
+              <div class="name-container">
+                <h3 class="Name">데브카르트</h3>
+              </div>
+              <div class="nickname-container">
+                <h3 class="Nickname">닉네임</h3>
+              </div>
+              <div class="email-container">
+                <h4 class="Email">Email@email.com</h4>
+              </div>
+              <div class="description-container">
+                <p class="Description">---설명---</p>
+              </div>
+            </div>
+            <button
+              class="profile-edit-button edit-btns"
+              onclick="editProfile()"
+            >
+              Edit
+            </button>
           </div>
-          <div class="menu-items board">
-            <a href="/board">게시판</a>
-          </div>
-          <div class="menu-items aboutUs">
-            <a href="/aboutUs">About Us</a>
-          </div>
-        </div>
-        <div class="user-status">
-          <!-- 로그인 전 -->
-          <!-- <div class="user-status-item-left login">
-            <a href="/login">로그인</a>
-          </div>
-          <div class="user-status-item join">
-            <a href="/join">회원가입</a>
-          </div> -->
-          <!-- 로그인 후 -->
-          <div class="user-status-item-left login">
-            <a href="/login">내 정보</a>
-          </div>
-          <div class="user-status-item join">
-            <a href="/join">로그아웃</a>
-          </div>
-        </div>
-      </div>
-      <div class="contents">
-        <div class="content-container" style="display: flex">
-          <div class="Container">
-            <div class="profile">
-              <div class="imageprofile-container">
-                <!-- 프로필 정보 -->
-                <img
-                  src="../studyhard.jpeg"
-                  alt="프로필 이미지"
-                  style="width: 150px; height: 150px"
-                />
-                <div class="profile-container">
-                  <div class="name-container">
-                    <h3 class="Name">데브카르트</h3>
-                  </div>
-                  <div class="nickname-container">
-                    <h3 class="Nickname">닉네임</h3>
-                  </div>
-                  <div class="email-container">
-                    <h4 class="Email">Email@email.com</h4>
-                  </div>
-                  <div class="description-container">
-                    <p class="Description">---설명---</p>
+          <div class="privacy-modify" id="privacy-modify-container">
+            <button class="change-password-btn" onclick="passwordChange()">
+              비밀번호 변경
+            </button>
+            <div class="modal" id="password_change_modal" display="none">
+              <div class="modal_popup">
+                <p>비밀번호 변경</p>
+                <p id="modaltext1"></p>
+                <span>이전 비밀번호</span>
+                <div class="btnbox">
+                  <input
+                    type="password"
+                    id="existed-pw"
+                    class="InputBox"
+                    placeholder="이전 비밀번호를 입력해주세요"
+                  />
+                </div>
+                <div>
+                  <span>변경 할 비밀번호</span>
+                  <div class="btnbox">
+                    <input
+                      type="password"
+                      id="change-setpw"
+                      class="InputBox"
+                      placeholder="변경하실 비밀번호를 입력해주세요."
+                    />
                   </div>
                 </div>
-                <button
-                  class="profile-edit-button editBtns"
-                  onclick="editProfile()"
-                >
-                  Edit
-                </button>
-              </div>
-              <div class="privacy-modify" id="privacy-modify-container">
-                <button
-                  class="change-password-btn editBtns"
-                  onclick="passwordChange()"
-                >
-                  비밀번호 변경
-                </button>
-                <div class="modal" id="password_change_modal" display="none">
-                  <div class="modal_popup">
-                    <p>비밀번호 변경</p>
-                    <p id="modaltext1"></p>
-                    <span>이전 비밀번호</span>
-                    <div class="btnbox">
-                      <input
-                        type="password"
-                        id="existed-pw"
-                        class="InputBox"
-                        placeholder="이전 비밀번호를 입력해주세요"
-                      />
-                    </div>
-                    <div>
-                      <span>변경 할 비밀번호</span>
-                      <div class="btnbox">
-                        <input
-                          type="password"
-                          id="change-setpw"
-                          class="InputBox"
-                          placeholder="변경하실 비밀번호를 입력해주세요."
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <span>비밀번호 재확인</span>
-                      <div class="btnbox">
-                        <input
-                          type="password"
-                          id="change-setpwchk"
-                          class="InputBox"
-                          placeholder="변경하실 비밀번호를 다시 입력해주세요."
-                          onkeyup="passwordCompare()"
-                        />
-                      </div>
-                    </div>
-                    <!-- <div
+                <div>
+                  <span>비밀번호 재확인</span>
+                  <div class="btnbox">
+                    <input
+                      type="password"
+                      id="change-setpwchk"
+                      class="InputBox"
+                      placeholder="변경하실 비밀번호를 다시 입력해주세요."
+                      onkeyup="passwordCompare()"
+                    />
+                  </div>
+                </div>
+                <!-- <div
                   class="change-password-container"
                   style="display: none"
                 ></div> -->
@@ -154,350 +126,333 @@
                   </div>
                 </div>
 
-                <div class="delete-account">
-                  <!-- <p>회원탈퇴를 진행하시려면 현재 비밀번호를 입력해주세요.</p> -->
-                  <div id="delete_account_container" class="btnbox">
-                    <button
-                      class="delete-account-btn editBtns"
-                      onclick="accountDelete()"
-                    >
-                      회원 탈퇴
-                    </button>
-                    <div class="modal" id="delete_account_modal" display="none">
-                      <div class="modal_popup">
-                        <p id="modaltext2">현재 비밀번호를 입력해주세요.</p>
-                        <input
-                          type="password"
-                          id="delete-account-pwchk"
-                          class="InputBox"
-                          placeholder="현재 비밀번호를 입력해주세요."
-                          display="none"
-                        />
-                        <div style="display: flex; justify-content: center">
-                          <button
-                            type="button"
-                            class="modal_btn"
-                            onclick="accountDeleteConfirm()"
-                          >
-                            확인
-                          </button>
-                          <button
-                            type="button"
-                            class="modal_btn"
-                            onclick="modalClose()"
-                          >
-                            닫기
-                          </button>
-                          <button
-                            type="button"
-                            id="move_btn2"
-                            class="modal_btn"
-                            onclick="gotologin()"
-                          >
-                            이동
-                          </button>
-                        </div>
-                      </div>
+            <div class="delete-account">
+              <!-- <p>회원탈퇴를 진행하시려면 현재 비밀번호를 입력해주세요.</p> -->
+              <div id="delete_account_container" class="btnbox">
+                <button class="delete-account-btn" onclick="accountDelete()">
+                  회원 탈퇴
+                </button>
+                <div class="modal" id="delete_account_modal" display="none">
+                  <div class="modal_popup">
+                    <p id="modaltext2">현재 비밀번호를 입력해주세요.</p>
+                    <input
+                      type="password"
+                      id="delete-account-pwchk"
+                      class="InputBox"
+                      placeholder="현재 비밀번호를 입력해주세요."
+                      display="none"
+                    />
+                    <div style="display: flex; justify-content: center">
+                      <button
+                        type="button"
+                        class="modal_btn"
+                        onclick="accountDeleteConfirm()"
+                      >
+                        확인
+                      </button>
+                      <button
+                        type="button"
+                        class="modal_btn"
+                        onclick="modalClose()"
+                      >
+                        닫기
+                      </button>
+                      <button
+                        type="button"
+                        id="move_btn2"
+                        class="modal_btn"
+                        onclick="gotologin()"
+                      >
+                        이동
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <button
-                class="profile-edit-button editBtns"
-                onclick="editProfile()"
-              >
-                Edit
-              </button>
-            </div>
-            <div class="education">
-              <!-- 학력 정보 -->
-              <div class="education">
-                <div class="education-title">
-                  <h2>
-                    학력
-                    <div class="editBtns">
-                      <button
-                        id="education-plus-button"
-                        onclick="addEducation()"
-                      >
-                        + 추가
-                      </button>
-                    </div>
-                  </h2>
-                </div>
-                <div class="education-list" id="educationList"></div>
-              </div>
-              <!-- 수상 정보 -->
-              <div class="award">
-                <div class="award-title">
-                  <h2>
-                    수상
-                    <div class="editBtns">
-                      <button id="award-plus-button" onclick="addAward()">
-                        + 추가
-                      </button>
-                    </div>
-                  </h2>
-                </div>
-                <div class="award-list" id="awardList"></div>
-              </div>
-              <!-- 프로젝트 정보 -->
-              <div class="project">
-                <div class="project-title">
-                  <h2>
-                    프로젝트
-                    <div class="editBtns">
-                      <button id="project-plus-button" onclick="addProject()">
-                        + 추가
-                      </button>
-                    </div>
-                  </h2>
-                </div>
-                <div class="project-list" id="projectList"></div>
-              </div>
-              <!-- 자격증 정보 -->
-              <div class="certificate">
-                <div class="certificate-title">
-                  <h2>
-                    자격증
-                    <div class="editBtns">
-                      <button
-                        id="certificate-plus-button"
-                        onclick="addCertificate()"
-                      >
-                        + 추가
-                      </button>
-                    </div>
-                  </h2>
-                </div>
-                <div class="certificate-list" id="certificateList"></div>
-              </div>
-              <!-- 스킬 정보 -->
-              <div class="skill">
-                <div class="skill-title">
-                  <h2>
-                    스킬
-                    <div class="editBtns">
-                      <button id="skill-plus-button" onclick="addSkill()">
-                        + 추가
-                      </button>
-                    </div>
-                  </h2>
-                </div>
-                <div class="skill-list" id="skillList"></div>
-              </div>
-              <!-- 모달 창 -->
-              <div id="educationModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <form id="educationForm">
-                    <select>
-                      <option value="">학력 구분 선택</option>
-                      <option value="elementry">초등학교 졸업</option>
-                      <option value="middle">중학교 졸업</option>
-                      <option value="high">고등학교 졸업</option>
-                      <option value="colleage">대학교,대학원 졸업</option>
-                    </select>
-                    <select id="schoolStatus">
-                      <option value="">학위 선택</option>
-                      <option value="재학중">대학(2,3년)</option>
-                      <option value="학사졸업">대학(4년)</option>
-                      <option value="석사졸업">대학원(석사)</option>
-                      <option value="박사졸업">대학원(박사)</option>
-                    </select>
-                    <input type="text" id="university" placeholder="대학교" />
-                    <input type="text" id="major" placeholder="전공" />
-                    <select id="graduationStatus">
-                      <option value="">졸업여부</option>
-                      <option value="graduated">졸업</option>
-                      <option value="enrolled">재학중</option>
-                      <option value="leave">휴학중</option>
-                      <option value="completed">수료</option>
-                      <option value="dropout">중퇴</option>
-                      <option value="selfDropout">자퇴</option>
-                      <option value="graduateIntended">졸업예정</option>
-                    </select>
-                    <input type="date" placeholder="입학 년월" />
-                    <input type="date" placeholder="졸업 년월" />
-                    <button
-                      id="close-modal-button"
-                      onclick="closeModal()"
-                      style="display: none"
-                    >
-                      취소
-                    </button>
-                    <button
-                      type="button"
-                      id="education-confirm-button"
-                      onclick="confirmEducation(event)"
-                      style="display: none"
-                    >
-                      저장
-                    </button>
-                    <button
-                      type="button"
-                      id="education-edit-button"
-                      onclick="submitEducationUpdate()"
-                      style="display: none"
-                    >
-                      수정
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div id="awardModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <form id="awardForm">
-                    <input type="text" id="title" placeholder="수상 이름" />
-                    <input type="date" id="acqDate" placeholder="입상 날짜" />
-                    <input type="text" id="details" placeholder="상세 설명" />
-                    <button
-                      id="close-award-button"
-                      onclick="closeAwardModal()"
-                      style="display: none"
-                    >
-                      취소
-                    </button>
-                    <button
-                      type="button"
-                      id="award-confirm-button"
-                      onclick="confirmAward(event)"
-                      style="display: none"
-                    >
-                      저장
-                    </button>
-                    <button
-                      type="button"
-                      id="award-edit-button"
-                      onclick="submitAwardUpdate()"
-                      style="display: none"
-                    >
-                      수정
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div id="projectModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <form id="projectForm">
-                    <input
-                      type="text"
-                      id="projectTitle"
-                      placeholder="프로젝트 이름"
-                    />
-                    <input type="date" id="startDate" placeholder="시작 날짜" />
-                    <input type="date" id="endDate" placeholder="종료 날짜" />
-                    <input
-                      type="text"
-                      id="projectDetails"
-                      placeholder="상세 설명"
-                    />
-                    <button
-                      id="close-project-button"
-                      onclick="closeProjectModal()"
-                      style="display: none"
-                    >
-                      취소
-                    </button>
-                    <button
-                      type="button"
-                      id="project-confirm-button"
-                      onclick="confirmProject(event)"
-                      style="display: none"
-                    >
-                      저장
-                    </button>
-                    <button
-                      type="button"
-                      id="project-edit-button"
-                      onclick="submitProjectUpdate()"
-                      style="display: none"
-                    >
-                      수정
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div id="certificateModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <form id="certificateForm">
-                    <input
-                      type="text"
-                      id="certificateTitle"
-                      placeholder="자격증 이름"
-                    />
-                    <input
-                      type="date"
-                      id="acquireDate"
-                      placeholder="취득 날짜"
-                    />
-                    <button
-                      id="close-certificate-button"
-                      onclick="closeCertificateModal()"
-                      style="display: none"
-                    >
-                      취소
-                    </button>
-                    <button
-                      type="button"
-                      id="certificate-confirm-button"
-                      onclick="confirmCertificate(event)"
-                      style="display: none"
-                    >
-                      저장
-                    </button>
-                    <button
-                      type="button"
-                      id="certificate-edit-button"
-                      onclick="submitCertificateUpdate()"
-                      style="display: none"
-                    >
-                      수정
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div id="skillModal" class="modal">
-                <div class="modal-content">
-                  <span class="close">&times;</span>
-                  <form id="skillForm">
-                    <input type="text" id="skillTitle" placeholder="스킬" />
-                    <button
-                      id="close-skill-button"
-                      onclick="closeSkillModal()"
-                      style="display: none"
-                    >
-                      취소
-                    </button>
-                    <button
-                      type="button"
-                      id="skill-confirm-button"
-                      onclick="confirmSkill(event)"
-                      style="display: none"
-                    >
-                      저장
-                    </button>
-                    <button
-                      type="button"
-                      id="skill-edit-button"
-                      onclick="submitSkillUpdate()"
-                      style="display: none"
-                    >
-                      수정
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <script src="./userpage.js"></script>
             </div>
           </div>
+          <button class="profile-edit-button editBtns" onclick="editProfile()">
+            Edit
+          </button>
+        </div>
+        <div class="education">
+          <!-- 학력 정보 -->
+          <div class="education">
+            <div class="education-title">
+              <h2>
+                학력
+                <div class="editBtns">
+                  <button id="education-plus-button" onclick="addEducation()">
+                    + 추가
+                  </button>
+                </div>
+              </h2>
+            </div>
+            <div class="education-list" id="educationList"></div>
+          </div>
+          <!-- 수상 정보 -->
+          <div class="award">
+            <div class="award-title">
+              <h2>
+                수상
+                <div class="editBtns">
+                  <button id="award-plus-button" onclick="addAward()">
+                    + 추가
+                  </button>
+                </div>
+              </h2>
+            </div>
+            <div class="award-list" id="awardList"></div>
+          </div>
+          <!-- 프로젝트 정보 -->
+          <div class="project">
+            <div class="project-title">
+              <h2>
+                프로젝트
+                <div class="editBtns">
+                  <button id="project-plus-button" onclick="addProject()">
+                    + 추가
+                  </button>
+                </div>
+              </h2>
+            </div>
+            <div class="project-list" id="projectList"></div>
+          </div>
+          <!-- 자격증 정보 -->
+          <div class="certificate">
+            <div class="certificate-title">
+              <h2>
+                자격증
+                <div class="editBtns">
+                  <button
+                    id="certificate-plus-button"
+                    onclick="addCertificate()"
+                  >
+                    + 추가
+                  </button>
+                </div>
+              </h2>
+            </div>
+            <div class="certificate-list" id="certificateList"></div>
+          </div>
+          <!-- 스킬 정보 -->
+          <div class="skill">
+            <div class="skill-title">
+              <h2>
+                스킬
+                <div class="editBtns">
+                  <button id="skill-plus-button" onclick="addSkill()">
+                    + 추가
+                  </button>
+                </div>
+              </h2>
+            </div>
+            <div class="skill-list" id="skillList"></div>
+          </div>
+          <!-- 모달 창 -->
+          <div id="educationModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="educationForm">
+                <select>
+                  <option value="">학력 구분 선택</option>
+                  <option value="elementry">초등학교 졸업</option>
+                  <option value="middle">중학교 졸업</option>
+                  <option value="high">고등학교 졸업</option>
+                  <option value="colleage">대학교,대학원 졸업</option>
+                </select>
+                <select id="schoolStatus">
+                  <option value="">학위 선택</option>
+                  <option value="재학중">대학(2,3년)</option>
+                  <option value="학사졸업">대학(4년)</option>
+                  <option value="석사졸업">대학원(석사)</option>
+                  <option value="박사졸업">대학원(박사)</option>
+                </select>
+                <input type="text" id="university" placeholder="대학교" />
+                <input type="text" id="major" placeholder="전공" />
+                <select id="graduationStatus">
+                  <option value="">졸업여부</option>
+                  <option value="graduated">졸업</option>
+                  <option value="enrolled">재학중</option>
+                  <option value="leave">휴학중</option>
+                  <option value="completed">수료</option>
+                  <option value="dropout">중퇴</option>
+                  <option value="selfDropout">자퇴</option>
+                  <option value="graduateIntended">졸업예정</option>
+                </select>
+                <input type="date" placeholder="입학 년월" />
+                <input type="date" placeholder="졸업 년월" />
+                <button
+                  id="close-modal-button"
+                  onclick="closeModal()"
+                  style="display: none"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  id="education-confirm-button"
+                  onclick="confirmEducation(event)"
+                  style="display: none"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  id="education-edit-button"
+                  onclick="submitEducationUpdate()"
+                  style="display: none"
+                >
+                  수정
+                </button>
+              </form>
+            </div>
+          </div>
+          <div id="awardModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="awardForm">
+                <input type="text" id="title" placeholder="수상 이름" />
+                <input type="date" id="acqDate" placeholder="입상 날짜" />
+                <input type="text" id="details" placeholder="상세 설명" />
+                <button
+                  id="close-award-button"
+                  onclick="closeAwardModal()"
+                  style="display: none"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  id="award-confirm-button"
+                  onclick="confirmAward(event)"
+                  style="display: none"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  id="award-edit-button"
+                  onclick="submitAwardUpdate()"
+                  style="display: none"
+                >
+                  수정
+                </button>
+              </form>
+            </div>
+          </div>
+          <div id="projectModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="projectForm">
+                <input
+                  type="text"
+                  id="projectTitle"
+                  placeholder="프로젝트 이름"
+                />
+                <input type="date" id="startDate" placeholder="시작 날짜" />
+                <input type="date" id="endDate" placeholder="종료 날짜" />
+                <input
+                  type="text"
+                  id="projectDetails"
+                  placeholder="상세 설명"
+                />
+                <button
+                  id="close-project-button"
+                  onclick="closeProjectModal()"
+                  style="display: none"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  id="project-confirm-button"
+                  onclick="confirmProject(event)"
+                  style="display: none"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  id="project-edit-button"
+                  onclick="submitProjectUpdate()"
+                  style="display: none"
+                >
+                  수정
+                </button>
+              </form>
+            </div>
+          </div>
+          <div id="certificateModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="certificateForm">
+                <input
+                  type="text"
+                  id="certificateTitle"
+                  placeholder="자격증 이름"
+                />
+                <input type="date" id="acquireDate" placeholder="취득 날짜" />
+                <button
+                  id="close-certificate-button"
+                  onclick="closeCertificateModal()"
+                  style="display: none"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  id="certificate-confirm-button"
+                  onclick="confirmCertificate(event)"
+                  style="display: none"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  id="certificate-edit-button"
+                  onclick="submitCertificateUpdate()"
+                  style="display: none"
+                >
+                  수정
+                </button>
+              </form>
+            </div>
+          </div>
+          <div id="skillModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <form id="skillForm">
+                <input type="text" id="skillTitle" placeholder="스킬" />
+                <button
+                  id="close-skill-button"
+                  onclick="closeSkillModal()"
+                  style="display: none"
+                >
+                  취소
+                </button>
+                <button
+                  type="button"
+                  id="skill-confirm-button"
+                  onclick="confirmSkill(event)"
+                  style="display: none"
+                >
+                  저장
+                </button>
+                <button
+                  type="button"
+                  id="skill-edit-button"
+                  onclick="submitSkillUpdate()"
+                  style="display: none"
+                >
+                  수정
+                </button>
+              </form>
+            </div>
+          </div>
+          <script src="./userpage.js"></script>
         </div>
       </div>
     </div>
-
-    <script src="/layout/header.js"></script>
   </body>
 </html>

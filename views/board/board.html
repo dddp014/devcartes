@@ -4,120 +4,114 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>게시판</title>
+    <link rel="stylesheet" href="/board/board.css" />
     <link rel="stylesheet" href="/main.css" />
     <link rel="stylesheet" href="/layout/header.css" />
-    <link rel="stylesheet" href="/board/board.css" />
   </head>
   <body>
     <div class="container">
       <!-- header -->
       <div class="header">
-          <div class="logo">
-              <a href="/">
-                  <img class="logo-image" src="/img/logo.png" alt="logo" />
-              </a>
+        <div class="logo">
+          <a href="/">
+            <img class="logo-image" src="/img/logo.png" alt="logo" />
+          </a>
+        </div>
+        <div class="menu">
+          <div class="menu-items home">
+            <a href="/">홈</a>
           </div>
-          <div class="menu">
-              <div class="menu-items home">
-                  <a href="/">홈</a>
-              </div>
-              <div class="menu-items board">
-                  <a href="/board">게시판</a>
-              </div>
-              <div class="menu-items aboutUs">
-                  <a href="/aboutUs">About Us</a>
-              </div>
+          <div class="menu-items board">
+            <a href="/network">네트워크</a>
           </div>
-          <div class="user-status">
-              <!-- 로그인 전 -->
-              <div class="user-status-item-left login">
-                  <a href="/login">로그인</a>
-              </div>
-              <div class="user-status-item join">
-                  <a href="/join">회원가입</a>
-              </div>
-              <!-- 로그인 후 -->
-              <!-- <div class="user-status-item-left login">
-                  <a href="/login">내 정보</a>
-              </div>
-              <div class="user-status-item join">
-                  <a href="/join">로그아웃</a>
-              </div> -->
+          <div class="menu-items aboutUs">
+            <a href="/aboutUs">About Us</a>
           </div>
+        </div>
+        <div class="user-status">
+          <!-- 로그인 후 -->
+          <div class="user-status-item-left login" id="userpage">
+            <a href="/userpage">내 정보</a>
+          </div>
+          <div class="user-status-item logout" id="logout" onclick="logout()">
+            <a>로그아웃</a>
+          </div>
+          <div class="user-status-item-left" id="login">
+            <a href="/login">로그인</a>
+          </div>
+        </div>
       </div>
 
       <!-- contents -->
       <div class="contents">
-    <!-- 네비게이션 -->
-    <div class="menu-container">
-      <ul>
-        <li><button onclick="goNetwork()">네트워크</button></li>
-        <li class="visible-btns">
-          <button onclick="goUserpage()">내 정보</button>
-        </li>
-        <li class="visible-btns">
-          <button onclick="logout()">로그아웃</button>
-        </li>
-      </ul>
+        <!-- 네비게이션 -->
+
+        <div class="main-container">
+          <!-- 게시판 목록 -->
+          <div class="post-list-container" id="post-list-container">
+            <div class="post-head">
+              <div class="post-head-title"><span>제목</span></div>
+              <div class="post-head-nickname"><span>작성자</span></div>
+              <div class="post-head-nickname"><span>작성일자</span></div>
+            </div>
+            <div class="post-list"></div>
+            <div class="board-post-btn visible-btns">
+              <button onclick="goWritePost()">글 쓰기</button>
+            </div>
+            <div class="prev-btn" id="prev-btn">
+              <button onclick="getPrevPostList()">이전</button>
+            </div>
+            <div class="next-btn" id="next-btn">
+              <button onclick="getNextPostList()">다음</button>
+            </div>
+          </div>
+
+          <!-- 작성버튼 -->
+
+          <!-- 게시물 작성 창 -->
+          <div
+            class="write-post-container"
+            id="write-post-container"
+            style="display: none"
+          >
+            <span>Title</span>
+            <input class="write-post-title input-box" id="write-post-title" />
+            <span>Contents</span>
+            <input
+              class="write-post-contents input-box"
+              id="write-post-contents"
+            />
+            <button onclick="outWritePost()">취소</button>
+            <button onclick="registPost()">글 쓰기</button>
+          </div>
+
+          <!-- 게시글 내용 (1개보여줌) -->
+          <div class="post-container" id="post-container" style="display: none">
+            <div class="post-topwrap">
+              <div class="post-title" id="post-title"></div>
+              <div class="post-writtentime" id="post-writtentime"></div>
+              <div class="post-nickname" id="post-nickname"></div>
+            </div>
+            <div class="post-contents-warp">
+              <div class="post-contents" id="post-contents">왜안뜨니너넨</div>
+            </div>
+            <div class="post-bottomwrap">
+              <div class="post-islike">ㅇㅇㅇㅇㅇㅇㅇ</div>
+              <div class="post-likes">ㅇㅇㅇ</div>
+              <div class="post-like-list">ㅇㅇㅇㅇ</div>
+            </div>
+            <div class="post-comment-container">
+              <div class="post-comment" id="post-comment"></div>
+              <!-- <div class="comment-write" id="comment-write">작성</div> -->
+              <!-- <div id="post-comments">댓글 목록</div> -->
+              <!-- 이런 형태로 리스트 쭉 div 로 계속 추가(js에서) -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="main-container">
-      <!-- 게시판 목록 -->
-      <div class="post-list-container" display="block">
-        <div class="post-head">
-          <div class="post-head-title"><span>제목</span></div>
-          <div class="post-head-nickname"><span>작성자</span></div>
-        </div>
-        <div class="post-list"></div>
-        <div class="board-post-btn visible-btns" display="block">
-          <button onclick="goWritePost()">글 쓰기</button>
-        </div>
-        <div class="prev-btn">
-          <button>이전</button>
-        </div>
-        <div class="next-btn">
-          <button onclick="nextPostList()">다음</button>
-        </div>
-      </div>
-
-      <!-- 작성버튼 -->
-
-      <!-- 게시물 작성 창 -->
-      <div
-        class="write-post-container"
-        id="write-post-container"
-        display="none"
-      >
-        <span>Title</span>
-        <input class="write-post-title input-box" id="write-post-title" />
-        <span>Contents</span>
-        <input class="write-post-contents input-box" id="write-post-contents" />
-        <button onclick="outWritePost()">취소</button>
-        <button onclick="registPost()">글 쓰기</button>
-      </div>
-
-      <!-- 게시판 내용 (1개보여줌) -->
-      <div class="post-container" id="post-container" display="none">
-        <div class="post-topwrap">
-          <span id="post-contents">내용</span>
-          <span id="post-writer-nickname">작성자 닉넹ㅁ</span>
-          <span id="post-written-time">작성된 시간</span>
-        </div>
-        <div class="post-contents-warp">
-          <span id="post-contents"></span>
-        </div>
-        <div class="post-comment-container">
-          <div class="post-comment"></div>
-          <!-- <div id="post-comments">댓글 목록</div> -->
-          <!-- 이런 형태로 리스트 쭉 div 로 계속 추가(js에서) -->
-        </div>
-      </div>
-    </div>
-    
-  </div>
-</div>
-
-<script src="/layout/header.js"></script>
+    <script src="/layout/header.js"></script>
     <script type="text/javascript" src="/board/board.js"></script>
   </body>
 </html>
