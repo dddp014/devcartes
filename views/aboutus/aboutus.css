@@ -1,0 +1,9 @@
+.contents {
+  padding: 100px 85px;
+}
+
+.menu-items,
+.user-status-item,
+.user-status-item-left {
+  cursor: pointer;
+}

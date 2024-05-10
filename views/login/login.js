@@ -58,7 +58,7 @@ function changeModalText(txtNum) {
     document.getElementById("modaltext").innerHTML = "가입완료!";
   } else if (txtNum == 5) {
     document.getElementById("modaltext").innerHTML =
-      "입력되지않은 내용이 있습니다.";
+      "입력하지않은 내용이 있거나 올바른 형식이 아닙니다.";
   } else if (txtNum == 6) {
     document.getElementById("modaltext").innerHTML =
       "이미 가입되어있는 ID 입니다.";
@@ -105,7 +105,7 @@ function login() {
   const email = document.getElementById("email").value;
   const pw = document.getElementById("pw").value;
 
-  fetch("http://localhost:8080/auth/login", {
+  fetch("/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -182,7 +182,7 @@ function setAccount() {
   }
 
   if (passwordCheck(pw, pwchk) && emailCheck(email)) {
-    fetch("http://localhost:8080/auth/join", {
+    fetch("/auth/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -218,7 +218,7 @@ function setAccount() {
 function accountDelete() {
   if (confirm("정말 회원탈퇴를 진행하시겠습니까?")) {
     const pw = document.getElementById("delete-account-pwchk").value;
-    fetch("http://localhost:8080/auth", {
+    fetch("/auth", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -243,7 +243,7 @@ function passwordChange() {
   const prevPw = document.getElementById("existed-pw").value;
   const pw = document.getElementById("change-setpw").value;
   // console.log(prevPw, pw);
-  fetch("http://localhost:8080/auth", {
+  fetch("/auth", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -258,7 +258,7 @@ function passwordChange() {
       modalOpen(10);
       localStorage.setItem("goTo", "login");
       //변경된 비밀번호로 다시 로그인하게 유도
-      fetch("http://localhost:8080/auth/logout", {
+      fetch("/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,135 +1,131 @@
-@font-face {
-  font-family: "continuous";
-  src: url("../continuous.ttf") format("truetype");
+.texts {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-@font-face {
-  font-family: "Pretendard-Regular";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
-  font-weight: 400;
-  font-style: normal;
+.contents {
+  padding: 100px 85px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+#logo {
+  color: #ff708ae6;
+  font-weight: 700;
 }
 
-body {
-  background-color: rgb(255, 255, 255);
-  display: grid;
-  grid-template-columns: 400px 1fr; /* 1:2 비율로 나누기 */
+.maincontainer {
+  margin-top: 50px;
+  height: 100vh;
 }
 
-.contentContainer {
-  display: flex;
-  background-color: #ffffff;
-  margin: -1%;
+.LoginContainer,
+.createAccountContainer {
+  position: relative;
+  display: block;
+  max-width: 600px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 0px 4px #ff708ae6;
+  border-radius: 10px;
 }
-.navbar {
-  display: flex;
-  flex-direction: column;
-  width: 25%;
-  padding: 30px 0 35% 0;
-  /* background-color: rgba(216, 107, 4, 0.692); */
-  background-color: #ffffff;
+
+.LoginContainer {
+  height: 450px;
 }
-.gotoNetworkpagebtn {
-  font-family: "continuous", Arial, sans-serif;
-  font-size: 24px;
-  padding: 2.5% 0 2.5% 0;
-  margin: 0 10% 0 10%;
-  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+
+.createAccountContainer {
+  height: 600px;
+}
+
+.login-title {
+  display: block;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 100px;
+  color: #1a202c;
+}
+
+.register-title {
+  margin-bottom: 50px;
+  display: block;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  text-align: center;
+  font-size: 2rem;
+  color: #1a202c;
+}
+
+.label {
+  display: block;
+  text-align: center;
+  color: rgb(0, 0, 0);
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.LoginAccount,
+.LoginPw {
+  text-align: center;
+}
+
+.InputBox {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 80%;
+  font-size: 1rem;
+  color: #4a5568;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.InputBox:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #cbd5e0;
+}
+
+.InputBox:valid {
+  border: 1px solid rgb(184, 184, 184);
+}
+
+.InputBox:invalid {
+  border: 1px solid rgba(14, 14, 14, 0.205);
+}
+
+.submit {
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  background-color: #ff708ae6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
   margin: 10px;
-  margin-left: 30px;
-}
-.navbarContent:nth-last-child(1) {
-  box-shadow: none;
-}
-.logo {
-  font-family: "continuous", Arial, sans-serif;
-  font-size: 40px;
-  padding: 0 0 30% 10%;
-  cursor: pointer;
-}
-._h4 {
-  margin-block-end: 0.1em;
-  margin-block-start: 0.1em;
-  cursor: pointer;
-}
-
-.maincontainer {
-  right: 20px;
-}
-
-.maincontainer {
-  display: grid;
-  grid-column: 2;
-  position: fixed;
-  right: 400px;
-  top: 50px;
-}
-
-/* 
-.alert-text {
-  color: red;
-  font-weight: bold;
-  display: none;
 }
 
 .btnbox {
-  border-color: gray;
+  display: block;
+  text-align: center;
 }
-
-.body {
-  width: 100%;
-  height: 100%;
-} */
-
-/* .leftNav {
-  float: left;
-  width: 500px;
-  height: 900px;
-  background-color: white;
-  display: flex;
-  align-items: middle;
-  display: table;
-  table-layout: fixed;
-} */
-/* .navlogo {
-  margin-left: 50px;
-  width: 300px;
-  height: 300px;
-}
-.img1 {
-  width: 300px;
-  height: 300px;
-}
-.navbtns {
-  width: 300px;
-  height: 300px;
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.maincontainer {
-  display: inline-block;
-  width: 900px;
-  height: 900px;
-  background-color: white;
-  position: absolute;
-}
-
-.privacy-modify {
-  padding-top: 5%;
-}
-
-.delete-account-container {
-  padding-top: 5%;
-} */
 
 /* 팝업모달 */
 h2 {

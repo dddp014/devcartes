@@ -8,6 +8,7 @@ const {
   Board,
   Like,
   Skill,
+  Comment,
 } = require("../models");
 const {
   BadRequest,
@@ -17,6 +18,7 @@ const {
   Conflict,
 } = require("../errors");
 const { identification } = require("../utils/identification");
+const { userSchema } = require("../utils/validation");
 const multer = require("multer");
 const path = require("path");
 const { nanoid } = require("nanoid");
@@ -138,21 +140,11 @@ router.put("/mypage", async (req, res, next) => {
       throw new Unauthorized("로그인 후 이용 가능합니다.");
     }
 
-    // body validation
-    if (!name || !nickname || !description) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
-    }
-    if (name.trim().length === 0) {
-      throw new BadRequest("공백은 이름으로 사용 불가능합니다."); // 400 에러
-    }
-    if (name.trim() !== name) {
-      throw new BadRequest("이름 앞뒤에는 띄어쓰기를 사용할 수 없습니다."); // 400 에러
-    }
-    if (nickname.trim().length === 0) {
-      throw new BadRequest("공백은 닉네임으로 사용 불가능합니다."); // 400 에러
-    }
-    if (nickname.split(" ").join("") !== nickname) {
-      throw new BadRequest("닉네임에는 띄어쓰기를 사용할 수 없습니다."); // 400 에러
+    // Joi validation
+    const { error } = userSchema.validate({ name, nickname, description });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const existsNickname = await User.findOne({ nickname }).lean();
@@ -208,6 +200,18 @@ router.put("/mypage", async (req, res, next) => {
             fromUser: req.session.passport.user.nickname,
           },
           { fromUser: nickname }
+        ).lean();
+      }
+      // comment nickname 변경
+      const findComment = await Comment.find({
+        nickname: req.session.passport.user.nickname,
+      }).lean();
+      if (findComment.length !== 0) {
+        await Comment.updateMany(
+          {
+            nickname: req.session.passport.user.nickname,
+          },
+          { nickname }
         ).lean();
       }
 

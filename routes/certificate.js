@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { User, Certificate } = require("../models");
 const { BadRequest, Unauthorized, Forbidden, NotFound } = require("../errors");
+const { certificateSchema } = require("../utils/validation");
 
 const router = Router();
 
@@ -39,8 +40,14 @@ router.post("/", async (req, res, next) => {
     const userId = req.session.passport.user.userId;
     const { title, acqDate } = req.body;
 
-    if (!title || !acqDate) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = certificateSchema.validate({
+      title,
+      acqDate,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const certificate = await Certificate.create({
@@ -75,8 +82,14 @@ router.put("/:certificateId", async (req, res, next) => {
     const certificateId = req.params.certificateId;
     const { title, acqDate } = req.body;
 
-    if (!title || !acqDate) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = certificateSchema.validate({
+      title,
+      acqDate,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const certificate = await Certificate.findOneAndUpdate(

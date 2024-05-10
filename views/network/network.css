@@ -1,34 +1,109 @@
+.menu-items,
+.user-status-item,
+.user-status-item-left {
+  cursor: pointer;
+}
+
+.contents {
+  padding: 100px 85px;
+}
+
 .usercard-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .usercard-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
 }
 
 .usercard {
-    overflow: hidden;
+  background-color: transparent;
+  width: 220px;
+  height: 260px;
+  perspective: 1000px;
+  font-family: sans-serif;
+  color: black;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.content {
+  color: white;
+  font-weight: 300;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  padding: 15px;
+}
+
+.userImage {
+  border-radius: 1rem;
+  padding: 10px;
+}
+
+.usercard-Inner {
+  display: grid;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.usercard-Front,
+.usercard-Back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  border: 2px solid rgb(124, 124, 124);
 }
 
 .usercard-Front {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background: linear-gradient(
+    130deg,
+    #ffffff 60%,
+    rgb(255, 255, 255) 88%,
+    rgb(255, 251, 253) 40%,
+    #ff708ae6 48%
+  );
+  color: black;
+  font-size: 10px;
+}
 
-    .userImage {
-        width: 100%;
-    height: 100%;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    object-fit: cover;
-    }
+.usercard-Back {
+  background: linear-gradient(
+    130deg,
+    #ff708ae6 88%,
+    rgb(255, 255, 255) 40%,
+    rgb(255, 255, 255) 78%
+  );
+  transform: rotateY(180deg);
+}
 
-    p {
-        font-weight: bold;
-    }
+.usercard-Inner:hover {
+  transform: rotateY(180deg);
 }

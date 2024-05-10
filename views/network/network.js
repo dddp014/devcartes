@@ -3,7 +3,7 @@
 /** 네크워크에 띄울 유저 정보 api 요청 */
 async function getUsers(page) {
   try {
-    const res = await fetch(`http://localhost:8080/users/?page=${page}`);
+    const res = await fetch(`/users/?page=${page}`);
     const data = await res.json();
     return data;
   } catch (error) {
@@ -14,7 +14,7 @@ async function getUsers(page) {
 /** 현재 사용자가 로그인이 되어있을 경우 유저 정보 api 요청*/
 async function getLoginStatus() {
   try {
-    const response = await fetch(`http://localhost:8080/auth/status`);
+    const response = await fetch(`/auth/status`);
     if (!response.ok) {
       throw new Errow("데이터를 불러오는 중에 문제가 발생했습니다.");
     }
@@ -48,14 +48,13 @@ async function getAllUser(currentPage) {
   }
 }
 
-/** Nav바 이벤트 핸들러 (로그인 이벤트 핸들러) */
-async function menuClickHandler() {
+/** Nav바 이벤트 핸들러 (유저페이지) */
+//유저가 로그인 상태이면 개인페이지 이동
+async function goToUserPage() {
   try {
     const logintrue = await getLoginStatus();
 
     if (logintrue.status === true) {
-      //유저가 로그인 상태이면 개인페이지 이동
-      // localStorage.setItem("tempId", logintrue.data.userId); //유저 id 로컬스토리지에 저장(개인 페이지용)
       window.location.href = `/userpage?user=${logintrue.data.userId}`;
     } else {
       alert("로그인 창으로 이동합니다.");
@@ -63,7 +62,26 @@ async function menuClickHandler() {
     }
   } catch (error) {
     console.error(error);
-    alert("로그인 창으로 이동합니다."); //팝업창으로 수정 예정
+    alert("로그인 창으로 이동합니다.");
+    window.location.href = `/login`;
+  }
+}
+
+/** Nav바 이벤트 핸들러 (게시판) */
+//유저가 로그인 상태이면 게시판 이동
+async function goToBoard() {
+  try {
+    const logintrue = await getLoginStatus();
+
+    if (logintrue.status === true) {
+      window.location.href = `/board/?page=1`;
+    } else {
+      alert("로그인 창으로 이동합니다.");
+      window.location.href = `/login`;
+    }
+  } catch (error) {
+    console.error(error);
+    alert("로그인 창으로 이동합니다.");
     window.location.href = `/login`;
   }
 }
@@ -150,7 +168,6 @@ async function renderUserCard() {
 
       usercard.addEventListener("click", () => {
         if (logintrue.status === true) {
-          // localStorage.setItem("tempId", user.userId);
           window.location.href = `/userpage?user=${user.userId}`;
         } else {
           alert("로그인 창으로 이동합니다.");
@@ -176,29 +193,27 @@ async function updateButton() {
   if (currentPage === 1) {
     prevButton.disabled = true;
     nextButton.disabled = false;
-    prevButton.style.backgroundColor = "#fff3d5";
-    nextButton.style.backgroundColor = "rgb(255, 255, 255)";
+    prevButton.style.backgroundColor = "#ff96a993";
+    nextButton.style.backgroundColor = "white";
     prevButton.style.color = "black";
     // 마지막 페이지일 경우
   } else if (currentPage === totalPages) {
     prevButton.disabled = false;
     nextButton.disabled = true;
-    prevButton.style.backgroundColor = "rgb(255, 255, 255)";
-    nextButton.style.backgroundColor = "#fff3d5";
+    prevButton.style.backgroundColor = "white";
+    nextButton.style.backgroundColor = "#ff96a993";
     nextButton.style.color = "black";
   } else {
     prevButton.disabled = false;
     nextButton.disabled = false;
-    prevButton.style.backgroundColor = "rgb(255, 255, 255)";
-    nextButton.style.backgroundColor = "rgb(255, 255, 255)";
+    prevButton.style.backgroundColor = "white";
+    nextButton.style.backgroundColor = "white";
   }
 }
 
 /** 로그인 상태에 따라 Nav바를 업데이트하는 함수 */
 async function updateMenu() {
   const loginElem = document.querySelector(".user-status-item-left.login");
-  const joinElem = document.querySelector(".user-status-item.join");
-
   const userpageElem = document.querySelector(
     ".user-status-item-left.userpage"
   );
@@ -210,31 +225,30 @@ async function updateMenu() {
     userpageElem.style.display = "block";
     logoutElem.style.display = "block";
     loginElem.style.display = "none";
-    joinElem.style.display = "none";
   } else {
     userpageElem.style.display = "none";
     logoutElem.style.display = "none";
     loginElem.style.display = "block";
-    joinElem.style.display = "block";
   }
 }
 
 /** 로그아웃 함수 */
 function getLogOut() {
-  fetch("http://localhost:8080/auth/logout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({}),
-  }).then((response) => {
-    if (response.status == 401) {
-      alert("로그인 후 이용 가능합니다.");
-    } else if (response.status == 200) {
-      alert("로그아웃 성공");
-      window.location.href = "/?page=1";
-    }
-  });
+  if (confirm("정말 로그아웃 하시겠습니까?")) {
+    fetch("/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    }).then((response) => {
+      if (response.status == 401) {
+        alert("로그인 후 이용 가능합니다.");
+      } else if (response.status == 200) {
+        window.location.href = "/?page=1";
+      }
+    });
+  }
 }
 
 /** 초기 화면 1페이지로 이동시키는 함수 */
@@ -255,24 +269,24 @@ async function init() {
   renderUserCard();
 
   const loginElem = document.querySelector(".user-status-item-left.login");
-  const joinElem = document.querySelector(".user-status-item.join");
   const userpageElem = document.querySelector(
     ".user-status-item-left.userpage"
   );
   const logoutElem = document.querySelector(".user-status-item.logout");
   const boardElem = document.querySelector(".menu-items.board");
+  const aboutElem = document.querySelector(".menu-items.aboutUs");
 
-  loginElem.addEventListener("click", menuClickHandler);
-  userpageElem.addEventListener("click", menuClickHandler);
-
-  boardElem.addEventListener("click", () => {
-    window.location.href = "/board/?page=1";
+  loginElem.addEventListener("click", () => {
+    window.location.href = "/login";
   });
-
-  //로그아웃 이벤트리스너 추기
+  userpageElem.addEventListener("click", goToUserPage);
   logoutElem.addEventListener("click", () => {
     getLogOut();
     window.location.href = "/?page=1";
+  });
+  boardElem.addEventListener("click", goToBoard);
+  aboutElem.addEventListener("click", () => {
+    window.location.href = "/aboutus";
   });
 
   //페이지네이션 관련 이벤트리스너 추가

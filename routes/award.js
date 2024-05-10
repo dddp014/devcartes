@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { User, Award } = require("../models");
 const { BadRequest, Unauthorized, Forbidden, NotFound } = require("../errors");
+const { awardSchema } = require("../utils/validation");
 
 const router = Router();
 
@@ -39,8 +40,15 @@ router.post("/", async (req, res, next) => {
     const { userId } = req.session.passport.user;
     const { title, details, acqDate } = req.body;
 
-    if (!title || !details || !acqDate) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = awardSchema.validate({
+      title,
+      details,
+      acqDate,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const award = await Award.create({
@@ -77,8 +85,15 @@ router.put("/:awardId", async (req, res, next) => {
     const awardId = req.params.awardId;
     const { title, details, acqDate } = req.body;
 
-    if (!title || !details || !acqDate) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = awardSchema.validate({
+      title,
+      details,
+      acqDate,
+    });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const award = await Award.findOneAndUpdate(

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko"></html>
+<head>
+  <meta charset="UTF-8" />
+  <title>header</title>
+
+  <link rel="stylesheet" href="/main.css" />
+  <link rel="stylesheet" href="/layout/header.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <a href="/">
+        <img class="logo-image" src="/img/logo.png" alt="logo" />
+      </a>
+    </div>
+    <div class="menu">
+      <div class="menu-items home">
+        <a href="/">홈</a>
+      </div>
+      <div class="menu-items board">
+        <a href="/board">게시판</a>
+      </div>
+      <div class="menu-items aboutUs">
+        <a href="/aboutUs">About Us</a>
+      </div>
+    </div>
+    <div class="user-status">
+      <!-- 로그인 전 -->
+      <div class="user-status-item-left login">
+        <a href="/login">로그인</a>
+      </div>
+      <!-- 로그인 후 -->
+      <div class="user-status-item-left userpage">
+        <a>내 정보</a>
+      </div>
+      <div class="user-status-item logout">
+        <a>로그아웃</a>
+      </div>
+    </div>
+  </div>
+  <script src="header.js"></script>
+  <script src="/aboutus/aboutus.js"></script>
+</body>

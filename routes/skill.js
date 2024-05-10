@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { User, Skill } = require("../models");
 const { BadRequest, Unauthorized, Forbidden, NotFound } = require("../errors");
+const { skillSchema } = require("../utils/validation");
 
 const router = Router();
 
@@ -39,8 +40,11 @@ router.post("/", async (req, res, next) => {
     const { userId } = req.session.passport.user; // id를 session에 있는 id 값으로
     const { stack } = req.body;
 
-    if (!stack) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = skillSchema.validate({ stack });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const skill = await Skill.create({
@@ -73,8 +77,11 @@ router.put("/:skillId", async (req, res, next) => {
     const { skillId } = req.params;
     const { stack } = req.body;
 
-    if (!stack) {
-      throw new BadRequest("입력되지 않은 내용이 있습니다."); // 400 에러
+    // Joi validation
+    const { error } = skillSchema.validate({ stack });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const skill = await Skill.findOneAndUpdate(

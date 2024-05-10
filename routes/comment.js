@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { Board, Comment } = require("../models");
 const { BadRequest, Unauthorized, Forbidden, NotFound } = require("../errors");
+const { commentSchema } = require("../utils/validation");
 
 const router = Router({ mergeParams: true });
 
@@ -39,8 +40,12 @@ router.post("/", async (req, res, next) => {
     if (!findBoard) {
       throw new NotFound("게시글을 찾을 수 없습니다."); // 404 에러
     }
-    if (contents.trim().length === 0) {
-      throw new BadRequest("내용을 입력하세요."); // 400 에러
+
+    // Joi validation
+    const { error } = commentSchema.validate({ contents });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const comment = await Comment.create({
@@ -76,7 +81,7 @@ router.put("/:commentId", async (req, res, next) => {
     const { boardId, commentId } = req.params;
     const { contents } = req.body;
     const findBoard = await Board.findOne({ boardId }).lean();
-    const findComment = await Comment.findOne({ commentId }).lean();
+    const findComment = await Comment.findOne({ boardId, commentId }).lean();
 
     if (!findBoard) {
       throw new NotFound("게시글을 찾을 수없습니다."); // 404 에러
@@ -87,8 +92,12 @@ router.put("/:commentId", async (req, res, next) => {
     if (nickname !== findComment.nickname) {
       throw new Forbidden("접근할 수 없습니다."); // 403 에러
     }
-    if (contents.trim().length === 0) {
-      throw new BadRequest("내용을 입력하세요."); // 400 에러
+
+    // Joi validation
+    const { error } = commentSchema.validate({ contents });
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      throw new BadRequest(errorMessages[0]); // 400 에러
     }
 
     const comment = await Comment.findOneAndUpdate(
@@ -124,7 +133,7 @@ router.delete("/:commentId", async (req, res, next) => {
     const { boardId, commentId } = req.params;
 
     const findBoard = await Board.findOne({ boardId }).lean();
-    const findComment = await Comment.findOne({ commentId }).lean();
+    const findComment = await Comment.findOne({ boardId, commentId }).lean();
 
     if (!findBoard) {
       throw new NotFound("게시글을 찾을 수 없습니다."); // 404 에러
