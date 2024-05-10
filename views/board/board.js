@@ -191,32 +191,41 @@ async function getPostContents(id) {
   try {
     const res = await fetch(`http://localhost:8080/boards/${id}`);
     const data = await res.json();
-    console.log(data.data[0].title);
-    console.log(data.data[0].contents);
-    console.log(data.data[0].createdAt.substr(0, 10));
-    console.log(data.data[0].comments);
-    console.log(data.data[0].nickname);
+    console.log(data.data[0].title);//
+    console.log(data.data[0].contents);//
+    console.log(data.data[0].createdAt.substr(0, 10));//
+    console.log(data.data[0].nickname);//
+    console.log(data.data[0].likes);//
     console.log(data.data[0].isLikes);
     console.log(data.data[0].listLikes);
-    console.log(data.data[0].likes);
+    console.log(data.data[0].comments);
 
     const title = data.data[0].title;
     const contents = data.data[0].contents;
     const createdAt = data.data[0].createdAt.substr(0, 10); // 앞에거만 잘라써야함
-    const comments = data.data[0].comments; //array
     const nickname = data.data[0].nickname;
+    const comments = data.data[0].comments; //array
     const islikes = data.data[0].isLikes; // boolean
     const listlikes = data.data[0].listLikes; //array
     const likes = data.data[0].likes;
 
+    
     document.getElementById("post-title").innerText = title;
-    document.getElementById("post-writtentime").innerText = createdAt;
     document.getElementById("post-contents").innerText = contents;
-    document.getElementById("post-islikes").innerText = islikes;
-    document.getElementById("post-comments").innerText = comments;
-    document.getElementById("post-listlikes").innerText = listlikes;
+    document.getElementById("post-writtentime").innerText = createdAt;
     document.getElementById("post-nickname").innerText = nickname;
     document.getElementById("post-likes").innerText = likes;
+    
+    const commentsElement = document.getElementById("post-comments");
+    
+    comments.forEach(comment => {
+      const commentElement = document.createElement("div");
+      commentElement.textContent = comment.contents;
+      commentsElement.appendChild(commentElement);
+    });
+
+    document.getElementById("post-islikes").innerText = islikes;
+    document.getElementById("post-listlikes").innerText = listlikes;
   } catch (error) {
     // alert("알수없는 오류로 정보를 불러오는데 실패했습니다.");
     // window.location.href = "/board/?page=1";

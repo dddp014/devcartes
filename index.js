@@ -70,6 +70,12 @@ app.get("/404", (req, res) => {
   res.render("404/404.html");
 });
 
+app.get("/aboutUs", (req, res) => {
+  res.render("aboutUs/aboutUs.html", {
+    javascriptkey:process.env.javascriptkey
+  });
+});
+
 // 서버 설정
 app.use(express.json());
 

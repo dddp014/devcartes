@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>게시판</title>
-    <link rel="stylesheet" href="/board/board.css" />
+    <title>Dev.cartes!</title>
     <link rel="stylesheet" href="/main.css" />
     <link rel="stylesheet" href="/layout/header.css" />
+    <link rel="stylesheet" href="/board/board.css" />
   </head>
   <body>
     <div class="container">
@@ -22,7 +22,7 @@
             <a href="/">홈</a>
           </div>
           <div class="menu-items board">
-            <a href="/network">네트워크</a>
+            <a href="/board/?page=1">게시판</a>
           </div>
           <div class="menu-items aboutUs">
             <a href="/aboutUs">About Us</a>
@@ -31,7 +31,7 @@
         <div class="user-status">
           <!-- 로그인 후 -->
           <div class="user-status-item-left login" id="userpage">
-            <a href="/userpage">내 정보</a>
+            <a>내 정보</a>
           </div>
           <div class="user-status-item logout" id="logout" onclick="logout()">
             <a>로그아웃</a>
@@ -52,17 +52,30 @@
             <div class="post-head">
               <div class="post-head-title"><span>제목</span></div>
               <div class="post-head-nickname"><span>작성자</span></div>
-              <div class="post-head-nickname"><span>작성일자</span></div>
+              <div class="post-head-createat"><span>작성일자</span></div>
             </div>
             <div class="post-list"></div>
-            <div class="board-post-btn visible-btns">
-              <button onclick="goWritePost()">글 쓰기</button>
-            </div>
-            <div class="prev-btn" id="prev-btn">
-              <button onclick="getPrevPostList()">이전</button>
-            </div>
-            <div class="next-btn" id="next-btn">
-              <button onclick="getNextPostList()">다음</button>
+            <div class="post-list-bottomwrap">
+              <div class="serach-box">
+                <select id="search-type">
+                  <option value="title">제목</option>
+                  <option value="contents">내용</option>
+                  <option value="titleContents">제목 + 내용</option>
+                  <option value="comments">댓글</option>
+                  <option value="nickname">닉네임</option>
+                </select>
+                <input id="search-box" />
+                <div class="search-btn" onclick="postSearch()">검색</div>
+              </div>
+              <div class="board-post-btn visible-btns">
+                <button onclick="goWritePost()">글 쓰기</button>
+              </div>
+              <div class="prev-btn" id="prev-btn">
+                <button onclick="getPrevPostList()">이전</button>
+              </div>
+              <div class="next-btn" id="next-btn">
+                <button onclick="getNextPostList()">다음</button>
+              </div>
             </div>
           </div>
 
@@ -74,37 +87,69 @@
             id="write-post-container"
             style="display: none"
           >
-            <span>Title</span>
+            <div class="align-left">Title</div>
             <input class="write-post-title input-box" id="write-post-title" />
-            <span>Contents</span>
-            <input
+            <div class="align-left">Contents</div>
+            <textarea
               class="write-post-contents input-box"
               id="write-post-contents"
-            />
-            <button onclick="outWritePost()">취소</button>
-            <button onclick="registPost()">글 쓰기</button>
+            ></textarea>
+            <button class="btn btn-red" onclick="outWritePost()">취소</button>
+            <button class="btn btn-green" onclick="registPost()">작성</button>
           </div>
 
           <!-- 게시글 내용 (1개보여줌) -->
           <div class="post-container" id="post-container" style="display: none">
             <div class="post-topwrap">
-              <div class="post-title" id="post-title"></div>
-              <div class="post-writtentime" id="post-writtentime"></div>
-              <div class="post-nickname" id="post-nickname"></div>
+              <div class="post-title align-left-title" id="post-title"></div>
+              <div
+                class="post-writtentime align-right"
+                id="post-writtentime"
+              ></div>
+              <div class="post-nickname align-right" id="post-nickname"></div>
             </div>
-            <div class="post-contents-warp">
-              <div class="post-contents" id="post-contents">왜안뜨니너넨</div>
-            </div>
-            <div class="post-bottomwrap">
-              <div class="post-islike">ㅇㅇㅇㅇㅇㅇㅇ</div>
-              <div class="post-likes">ㅇㅇㅇ</div>
-              <div class="post-like-list">ㅇㅇㅇㅇ</div>
+            <div class="post-view-wrap">
+              <div class="post-contents-warp">
+                <div class="post-contents" id="post-contents"></div>
+              </div>
+              <div class="post-bottomwrap">
+                <div class="post-likes align-right" id="post-likes"></div>
+                <div
+                  class="post-like-list align-right"
+                  id="post-like-list"
+                ></div>
+                <div
+                  class="post-golist-btn align-left btn"
+                  id="post-golist-btn"
+                >
+                  목록
+                </div>
+                <div
+                  class="post-modify-btn align-left btn btn-yellow"
+                  id="post-modify-btn"
+                >
+                  수정
+                </div>
+                <div
+                  class="post-delete-btn align-left btn btn-red"
+                  id="post-delete-btn"
+                >
+                  삭제
+                </div>
+              </div>
             </div>
             <div class="post-comment-container">
-              <div class="post-comment" id="post-comment"></div>
-              <!-- <div class="comment-write" id="comment-write">작성</div> -->
-              <!-- <div id="post-comments">댓글 목록</div> -->
-              <!-- 이런 형태로 리스트 쭉 div 로 계속 추가(js에서) -->
+              <textarea
+                class="post-comment-contents align-left"
+                id="post-comment-contents"
+              ></textarea>
+              <div
+                class="post-comment-btn align-left btn btn-green"
+                id="post-comment-btn"
+              >
+                등록
+              </div>
+              <div class="post-comment" id="post-comments"></div>
             </div>
           </div>
         </div>

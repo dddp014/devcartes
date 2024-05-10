@@ -10,6 +10,10 @@ body {
     height: 100vh;
 }
 
+.contents {
+    padding: 100px 85px;
+}
+
 .btn-container {
     margin: 30px 0;
 }
