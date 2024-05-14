@@ -372,18 +372,20 @@ router.get("/search/result", async (req, res, next) => {
       ).lean();
 
       // boardId만 추출해서 배열에 넣어준 후에 new Set을 이용해서 중복 제거를 하고 내림차 순으로 정렬함
-      const boardIdList = [];
-      for (const item of searchedComments) {
-        boardIdList.push(Number(item.boardId));
-      }
+      // 코드 리뷰 반영: Number 대신 parseInt 사용, for문 대신에 Array.prototype.map 사용
+      const boardIdList = searchedComments.map((comments) =>
+        parseInt(comments.boardId)
+      );
+
       const boardIdSet = [...new Set(boardIdList)].sort((a, b) => b - a);
 
       // 위에서 찾은 boardId 값으로 게시판 글을 찾아서 board에 넣어줌
-      // findOne이 아닌 find로 하면 객체 안에 또 객체가 들어감
-      for (const item of boardIdSet) {
-        const findBoard = await Board.findOne({ boardId: item }).lean();
-        board.push(findBoard);
-      }
+      // 코드 리뷰 반영: findOne 사용 대신 find와 in 사용해서 성능 개선
+      board = await Board.find({
+        boardId: {
+          $in: boardIdSet,
+        },
+      }).lean();
     }
 
     // 게시글 좋아요 관련 및 res 관련
@@ -417,7 +419,7 @@ router.get("/search/result", async (req, res, next) => {
     // 페이지네이션
     const page = Number(req.query.page || 1); // 현재 페이지
     const perPage = Number(req.query.perPage || 10); // 페이지 당 게시글 수
-    const total = board.length; // 총 Board 수 세기
+    const total = board.length; // 총 검색된 Board 수 세기
     const totalPage = Math.ceil(total / perPage);
 
     const { sortName } = req.body;
